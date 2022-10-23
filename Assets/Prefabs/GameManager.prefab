@@ -43,24 +43,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85eb4a562b1563649abc158d36b808e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerProperties:
-  - playerType: 0
-    energyRegenTime: 0.5
-    energyCost: 2
-    spawnTime: 0.5
-    reactivateTime: 2.5
-    normalSpeed: 1.5
-    carryingSpeed: 0.75
-    passBallSpeed: 1.5
-    returnSpeed: 0
-    detectionRangeFromStadium: 0
-  - playerType: 1
-    energyRegenTime: 0.5
-    energyCost: 3
-    spawnTime: 0.5
-    reactivateTime: 4
-    normalSpeed: 1
-    carryingSpeed: 0
-    passBallSpeed: 0
-    returnSpeed: 2
-    detectionRangeFromStadium: 0.35
+  gameSetting: {fileID: 11400000, guid: d435e0b4a27cdf84582d387f931c96be, type: 2}
+  field: {fileID: 0}
+  attackersParent: {fileID: 0}
+  defendersParent: {fileID: 0}
+  attackerPrefab: {fileID: 2248836095218684169, guid: 96c4c42b0c8fd6b40bcf9bc0be255568,
+    type: 3}
+  defenderSoldier: {fileID: 8500481251269879118, guid: c4d4ddc70ae42d94293e0a7af70a37fc,
+    type: 3}
+  controllers: []
+  isPlaying: 0
+  currentPlayTime: 0
+  currentTurn: {fileID: 0}
+  currentAttacker: {fileID: 0}
+  spawnedSoldiers: []
