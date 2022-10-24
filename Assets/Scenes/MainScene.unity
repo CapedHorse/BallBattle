@@ -350,6 +350,7 @@ MonoBehaviour:
   raycastLayer:
     serializedVersion: 2
     m_Bits: 1024
+  energy: 0
   isInTurn: 0
 --- !u!1 &83076368
 GameObject:
@@ -882,7 +883,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 393771718}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -1200,7 +1201,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 557562043}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -1446,6 +1447,7 @@ MonoBehaviour:
   raycastLayer:
     serializedVersion: 2
     m_Bits: 1024
+  energy: 0
   isInTurn: 0
 --- !u!1 &618155034
 GameObject:
@@ -2208,7 +2210,9 @@ MonoBehaviour:
   countDownParent: {fileID: 1966305971}
   countDownText: {fileID: 998121599}
   timerText: {fileID: 2046677453}
-  controllerUIs: []
+  controllerUIs:
+  - {fileID: 1393193064}
+  - {fileID: 1200971077}
 --- !u!1 &983335013
 GameObject:
   m_ObjectHideFlags: 0
@@ -2701,6 +2705,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5299d293a40ba514b9e0236ce8d47b00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controllerPosition: 0
   controller: {fileID: 610877012}
   barObj: {fileID: 393771718}
   barsParent: {fileID: 624806753}
@@ -3195,6 +3200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5299d293a40ba514b9e0236ce8d47b00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controllerPosition: 1
   controller: {fileID: 44872713}
   barObj: {fileID: 557562043}
   barsParent: {fileID: 424939211}

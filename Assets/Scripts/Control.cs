@@ -19,7 +19,7 @@ namespace CapedHorse.BallBattle
         // Start is called before the first frame update
         void Start()
         {
-
+            energy = GameManager.instance.gameSetting.energyBar;
         }
 
         void OnEnable()
@@ -103,19 +103,10 @@ namespace CapedHorse.BallBattle
 //#endif
         }
 
-        void SpawningSoldier(GameManager.Position spawnerPosition)
+        public void CostingEnergy(float energyCost)
         {
-            switch (spawnerPosition)
-            {
-                case GameManager.Position.Attacker:
-
-                    break;
-                case GameManager.Position.Defender:
-                    
-                    break;
-                default:
-                    break;
-            }
+            energy = Mathf.Clamp(energy - energyCost, 0, energy);
+            UIManager.OnCostingEnergy(this, energyCost);
         }
     }
 }

@@ -20,6 +20,8 @@ namespace CapedHorse.BallBattle
         public TextMeshProUGUI timerText;
 
         public List<ControllerUI> controllerUIs;
+
+        public static UnityAction<Control, float> OnCostingEnergy;
         void Awake()
         {
             if (instance == null)
@@ -43,6 +45,16 @@ namespace CapedHorse.BallBattle
         void Update()
         {
 
+        }
+
+        void OnEnable()
+        {
+            OnCostingEnergy += CostingEnergy;
+        }
+
+        void OnDisable()
+        {
+            OnCostingEnergy -= CostingEnergy;
         }
 
         /// <summary>
@@ -72,7 +84,16 @@ namespace CapedHorse.BallBattle
             countDownText.text = "GO!";
             yield return new WaitForSeconds(1);
             countDownParent.SetActive(false);
+            foreach (var item in controllerUIs)
+            {
+                item.Init();
+            }
             afterCountDown?.Invoke();
+        }
+
+        public void CostingEnergy(Control controller, float value)
+        {
+            controllerUIs.Find(x => x.controller == controller).EnergyCostUI(value);
         }
     }
 }

@@ -131,6 +131,11 @@ namespace CapedHorse.BallBattle
             SetTurn?.Invoke(currentTurn);
         }
 
+        /// <summary>
+        /// Checking if the energy is enough to spawn or not
+        /// </summary>
+        /// <param name="spawner"></param>
+        /// <param name="spawnedPosition"></param>
         void SpawningSoldier(Control spawner, Vector3 spawnedPosition)
         {
             Debug.Log("Spawning");
@@ -138,14 +143,25 @@ namespace CapedHorse.BallBattle
             switch (spawner.position)
             {
                 case Position.Attacker:
+                    if (spawner.energy < attackerPrefab.spawnEnergyCost)
+                    {
+                        //notifies that energy is low
+                        return;
+                    }
                     soldier = Instantiate(attackerPrefab, attackersParent);
                     break;
                 case Position.Defender:
+                    if (spawner.energy < defenderSoldier.spawnEnergyCost)
+                    {
+                        //notifies that energy is low
+                        return;
+                    }
                     soldier = Instantiate(defenderSoldier, defendersParent);
                     break;
                 default:
                     break;
             }
+            spawner.CostingEnergy(soldier.spawnEnergyCost);
             soldier.transform.position = spawnedPosition;
             spawnedSoldiers.Add(soldier);
 
