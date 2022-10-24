@@ -1,8 +1,6 @@
-﻿using NaughtyAttributes;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
+
 
 namespace CapedHorse.BallBattle
 {
@@ -31,9 +29,7 @@ namespace CapedHorse.BallBattle
         public Control currentTurn;
         public Control currentAttacker;
         
-        public static UnityAction<Control> SetTurn;
-        public static UnityAction<Control, Position> SetPosition;
-        public static UnityAction<Control, Vector3> OnSpawning;
+        
 
         public List<Soldier> spawnedSoldiers;
 
@@ -57,12 +53,12 @@ namespace CapedHorse.BallBattle
 
         void OnEnable()
         {
-            OnSpawning += SpawningSoldier;
+            EventManager.OnSpawning += SpawningSoldier;
         }
 
         void OnDisable()
         {
-            OnSpawning -= SpawningSoldier;
+            EventManager.OnSpawning -= SpawningSoldier;
         }
 
         // Update is called once per frame
@@ -90,14 +86,15 @@ namespace CapedHorse.BallBattle
         {
             currentPlayTime = gameSetting.timePerMatch;
             UIManager.instance.UpdateTimerUI(currentPlayTime);
+            SetControllerPosition();
             StartCoroutine(UIManager.instance.CountingDown(() =>
             {
                 isPlaying = true;
                 currentPlayTime += 1f;
                 currentTurn = controllers[controllers.Count-1];
-                currentAttacker = controllers[controllers.Count - 1];
+                currentAttacker = controllers[controllers.Count - 1];                
                 SetControllerTurn();
-                SetControllerPosition();
+                
             }));
         }
 
@@ -128,18 +125,19 @@ namespace CapedHorse.BallBattle
                 currentTurn = controllers[0];
             }
 
-            SetTurn?.Invoke(currentTurn);
+            EventManager.SetTurn?.Invoke(currentTurn);
         }
 
+        Soldier soldier;
         /// <summary>
-        /// Checking if the energy is enough to spawn or not
+        /// Checking if the energy is enough to spawn or not first.
         /// </summary>
         /// <param name="spawner"></param>
         /// <param name="spawnedPosition"></param>
         void SpawningSoldier(Control spawner, Vector3 spawnedPosition)
         {
             Debug.Log("Spawning");
-            var soldier = new Soldier();
+            
             switch (spawner.position)
             {
                 case Position.Attacker:
@@ -161,6 +159,7 @@ namespace CapedHorse.BallBattle
                 default:
                     break;
             }
+
             spawner.CostingEnergy(soldier.spawnEnergyCost);
             soldier.transform.position = spawnedPosition;
             spawnedSoldiers.Add(soldier);

@@ -6,9 +6,17 @@ namespace CapedHorse.BallBattle
 {
     public class Soldier : MonoBehaviour
     {
+        public enum State { Inactive, StandBy, Chasing, HoldingBall, StraightThrough }
+        public State status = State.Inactive;
         //object cache
         [Header("Object References")]
         public Transform modelParent;
+        public Animator anim;
+        //vfx
+        public GameObject puffShow;
+        public GameObject exploded;
+        public GameObject running;
+        public GameObject hit;
         //variables
         [Header("Variables")]
         public float energyRegenTime;
@@ -19,15 +27,20 @@ namespace CapedHorse.BallBattle
 
 
         // Start is called before the first frame update
-        void Start()
+        public void BaseStart()
         {
-
+            //OnChangingState(State.Spawned);
         }
 
         // Update is called once per frame
         void Update()
         {
 
+        }
+
+        public virtual void OnChangingState(State state)
+        {
+            status = state;
         }
     }
 }

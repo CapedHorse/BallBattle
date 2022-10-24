@@ -20,8 +20,6 @@ namespace CapedHorse.BallBattle
         public TextMeshProUGUI timerText;
 
         public List<ControllerUI> controllerUIs;
-
-        public static UnityAction<Control, float> OnCostingEnergy;
         void Awake()
         {
             if (instance == null)
@@ -47,15 +45,7 @@ namespace CapedHorse.BallBattle
 
         }
 
-        void OnEnable()
-        {
-            OnCostingEnergy += CostingEnergy;
-        }
-
-        void OnDisable()
-        {
-            OnCostingEnergy -= CostingEnergy;
-        }
+       
 
         /// <summary>
         /// To Update Timer in the UI.
@@ -89,11 +79,6 @@ namespace CapedHorse.BallBattle
                 item.Init();
             }
             afterCountDown?.Invoke();
-        }
-
-        public void CostingEnergy(Control controller, float value)
-        {
-            controllerUIs.Find(x => x.controller == controller).EnergyCostUI(value);
         }
     }
 }

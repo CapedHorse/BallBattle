@@ -24,12 +24,12 @@ namespace CapedHorse.BallBattle
 
         void OnEnable()
         {
-            GameManager.SetTurn += InTurn;
+            EventManager.SetTurn += InTurn;
         }
 
         void OnDisable()
         {
-            GameManager.SetTurn -= InTurn;
+            EventManager.SetTurn -= InTurn;
         }
 
         void InTurn(Control control)
@@ -96,7 +96,7 @@ namespace CapedHorse.BallBattle
                     Debug.Log("hit" + hit.transform.name + position.ToString());
                     if (hit.transform.CompareTag(position.ToString()+"Area"))
                     {
-                        GameManager.OnSpawning?.Invoke(this, hit.point);
+                        EventManager.OnSpawning?.Invoke(this, hit.point);
                     }
                 }
             }
@@ -106,7 +106,7 @@ namespace CapedHorse.BallBattle
         public void CostingEnergy(float energyCost)
         {
             energy = Mathf.Clamp(energy - energyCost, 0, energy);
-            UIManager.OnCostingEnergy(this, energyCost);
+            EventManager.OnCostingEnergy(this, energyCost);
         }
     }
 }

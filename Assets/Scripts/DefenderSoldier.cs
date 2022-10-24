@@ -6,6 +6,9 @@ namespace CapedHorse.BallBattle
 {
     public class DefenderSoldier : Soldier, IOnTriggerNotifiable
     {
+        
+        
+
         //variables
         public float returnSpeed;
         public float detectionRangeFromWidth;
@@ -17,13 +20,30 @@ namespace CapedHorse.BallBattle
         // Start is called before the first frame update
         void Start()
         {
-            
+            BaseStart();
         }
 
         // Update is called once per frame
         void Update()
         {
 
+        }
+
+        public override void OnChangingState(State state)
+        {
+            base.OnChangingState(state);
+
+            switch (state)
+            {
+                case State.Inactive:
+                    break;
+                case State.StandBy:
+                    break;
+                case State.Chasing:
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void onChild_OnTriggerEnter(Collider myEnteredTrigger, Collider other)

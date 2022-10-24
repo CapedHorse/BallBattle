@@ -24,6 +24,7 @@ namespace CapedHorse.BallBattle
             public Image barFullImg;
         }
         public List<BarUI> bars;
+        public List<BarUI> emptyBars;
 
         // Start is called before the first frame update
         void Start()
@@ -33,13 +34,17 @@ namespace CapedHorse.BallBattle
 
         void OnEnable()
         {
-            GameManager.SetTurn += InTurn;
+            EventManager.SetTurn += InTurn;
+            EventManager.OnCostingEnergy += EnergyCostUI;
         }
 
         void OnDisable()
         {
-            GameManager.SetTurn -= InTurn;
+            EventManager.SetTurn -= InTurn;
+            EventManager.OnCostingEnergy -= EnergyCostUI;
         }
+
+        
 
         /// <summary>
         /// Initiate the energy bar and its controller.
@@ -53,6 +58,7 @@ namespace CapedHorse.BallBattle
                 newBar.barFullImg = newBar.barParent.transform.GetChild(0).GetComponent<Image>();
                 newBar.barLowImg = newBar.barParent.transform.GetChild(1).GetComponent<Image>();
                 newBar.barLowImg.gameObject.SetActive(false);
+                newBar.barFull = true;
                 bars.Add(newBar);
             }
             barObj.SetActive(false);
@@ -76,9 +82,13 @@ namespace CapedHorse.BallBattle
             }
         }
 
-        int lastFilledBar;
-        public void EnergyCostUI(float cost)
-        {            
+        [SerializeField] int lastFilledBar; //log last filled bar index
+
+        public void EnergyCostUI(Control _controller,  float cost)
+        {
+            if (controller != _controller)
+                return;
+
             for (int i = 0; i < bars.Count; i++)
             {
                 if (i!= 0 && !bars[i].barFull)
@@ -87,12 +97,38 @@ namespace CapedHorse.BallBattle
                 }
             }
 
-            var realCost = Mathf.Clamp(lastFilledBar + cost, 0, bars.Count);
-            for (int i = lastFilledBar; i < realCost ; i++)
+            var startingBarCost = bars.Count -  bars.FindAll(x => x.barFull).Count;
+
+            var realCost = Mathf.Clamp(startingBarCost + cost, 0, bars.Count);
+            Debug.Log("Real cost " + realCost);
+            for (int i = startingBarCost; i < realCost ; i++)
             {
                 bars[i].barFullImg.gameObject.SetActive(false);
                 bars[i].barLowImg.gameObject.SetActive(true);
                 bars[i].barLowImg.fillAmount = 0;
+                bars[i].barFull = false;
+                emptyBars.Add(bars[i]);
+            }
+
+
+        }
+
+        /// <summary>
+        /// Need this to make newly used bar always on the front of the filled/currently refilling ones
+        /// </summary>
+        public void RearrangeEnergyBar()
+        {
+            
+        }
+
+        public void RefillEnergy(Control _controller) 
+        {
+            if (controller != _controller)
+                return;
+
+            if (emptyBars.Count > 0)
+            {
+                
             }
         }
 
