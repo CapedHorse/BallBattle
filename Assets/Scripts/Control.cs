@@ -12,6 +12,7 @@ namespace CapedHorse.BallBattle
         
         public LayerMask raycastLayer;
 
+        public List<Soldier> soldiers;
         [Header("Status")]
         public float energy;
         public bool isInTurn;
@@ -25,11 +26,13 @@ namespace CapedHorse.BallBattle
         void OnEnable()
         {
             EventManager.SetTurn += InTurn;
+            EventManager.OnNearestToBall += CheckNearestToBall;
         }
 
         void OnDisable()
         {
             EventManager.SetTurn -= InTurn;
+            EventManager.OnNearestToBall -= CheckNearestToBall;
         }
 
         void InTurn(Control control)
@@ -107,6 +110,21 @@ namespace CapedHorse.BallBattle
         {
             energy = Mathf.Clamp(energy - energyCost, 0, energy);
             EventManager.OnCostingEnergy(this, energyCost);
+        }
+
+        public void CheckNearestToBall()
+        {
+            if (position == GameManager.Position.Attacker)
+            {
+                for (int i = 0; i < soldiers.Count; i++)
+                {
+                    var soldier = soldiers[i];
+                    if (soldier.status == Soldier.State.StraightThrough)
+                    {
+
+                    }
+                }
+            }            
         }
     }
 }

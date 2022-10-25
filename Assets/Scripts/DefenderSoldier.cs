@@ -20,7 +20,7 @@ namespace CapedHorse.BallBattle
         // Start is called before the first frame update
         void Start()
         {
-            BaseStart();
+            StartCoroutine(BaseStart(() => OnChangingState(State.StandBy)));
         }
 
         // Update is called once per frame
@@ -36,6 +36,7 @@ namespace CapedHorse.BallBattle
             switch (state)
             {
                 case State.Inactive:
+                    anim.SetBool("Inactive", true);
                     break;
                 case State.StandBy:
                     break;

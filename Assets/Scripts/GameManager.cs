@@ -16,8 +16,10 @@ namespace CapedHorse.BallBattle
         [Header("Object Refs")]
         public Transform field;
         public Transform attackersParent, defendersParent;
+        public Transform attackerTargetGate;
         public AttackerSoldier attackerPrefab;
         public DefenderSoldier defenderSoldier;
+        public Ball ball;
 
 
         [Header("Stats")]
@@ -147,6 +149,7 @@ namespace CapedHorse.BallBattle
                         return;
                     }
                     soldier = Instantiate(attackerPrefab, attackersParent);
+                    soldier.transform.LookAt(attackerTargetGate);
                     break;
                 case Position.Defender:
                     if (spawner.energy < defenderSoldier.spawnEnergyCost)
@@ -155,6 +158,7 @@ namespace CapedHorse.BallBattle
                         return;
                     }
                     soldier = Instantiate(defenderSoldier, defendersParent);
+                    soldier.transform.LookAt(defendersParent);
                     break;
                 default:
                     break;
