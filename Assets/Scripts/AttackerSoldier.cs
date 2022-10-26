@@ -80,11 +80,6 @@ namespace CapedHorse.BallBattle
                 case State.Inactive:
                     ResetAnimation();
                     collider.enabled = false;
-                    DOVirtual.DelayedCall(reactivateTime, () =>
-                    {
-                        collider.enabled = true;
-                        OnChangingState(State.StraightThrough);
-                    });
                     break;
                 case State.HoldingBall:
                     SetAnimation("HoldingBall");
@@ -167,9 +162,17 @@ namespace CapedHorse.BallBattle
 
             if (other.CompareTag("Defender"))
             {
-                Debug.Log("Collide With Defender");
-                OnChangingState(State.Inactive);
-
+                if (other.GetComponent<DefenderSoldier>().status != State.Inactive)
+                {
+                    Debug.Log("Collide With Defender");
+                    OnChangingState(State.Inactive);
+                    DOVirtual.DelayedCall(reactivateTime, () =>
+                    {
+                        collider.enabled = true;
+                        OnChangingState(State.StraightThrough);
+                    });
+                }
+                
             }
         }
 
