@@ -15,8 +15,10 @@ namespace CapedHorse.BallBattle
         public Control controller;
         public Transform modelParent;
         public Transform indicator;
+        public Collider collider;
         public Animator anim;
         public Rigidbody rb;
+        public SkinnedMeshRenderer mesh;
         
         //vfx
         public GameObject puffShow;

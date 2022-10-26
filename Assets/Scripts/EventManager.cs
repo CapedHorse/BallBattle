@@ -16,6 +16,13 @@ namespace CapedHorse.BallBattle
         public static UnityAction<AttackerSoldier> OnNearestToBall;
         public static UnityAction<Control> OnNearestToToPass;
         public static UnityAction<AttackerSoldier> OnBallHolded;
+        public static UnityAction OnBallLoose;
+        public static UnityAction<DefenderSoldier, AttackerSoldier> OnAttackerCaught;
+        public static UnityAction<Control> OnGoal;
+        public static UnityAction<Control> OnNoBallPasses;
+        public static UnityAction OnTimesUp;
+        public static UnityAction OnTriggerPenalty;
+
 
         void Awake()
         {

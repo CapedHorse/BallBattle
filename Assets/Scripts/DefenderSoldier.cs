@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,10 +22,28 @@ namespace CapedHorse.BallBattle
         // Start is called before the first frame update
         void Start()
         {
+            initialPosition = transform.position; //initiate spawning position
+            
+            //initiate the detection radius, percentage of field width. Find the width using the difference between maximum and minimum of the field bounds.
+            var fieldBounds = GameManager.instance.fieldCollider.bounds;
+            var fieldWidth = new Vector2(fieldBounds.min.x, fieldBounds.max.x);
+            var wide = (fieldWidth.y - fieldWidth.x) * detectionRangeFromWidth;
+            detectionRadius.transform.localScale = new Vector3(wide, 0, wide);
+
             StartCoroutine(BaseStart(() =>  {
                 OnChangingState(State.StandBy); 
-                initialPosition = transform.position;
+                
                 }));
+        }
+
+        void OnEnable()
+        {
+            EventManager.OnAttackerCaught += OnAttackerCaught;
+        }
+
+        void OnDisable()
+        {
+            EventManager.OnAttackerCaught -= OnAttackerCaught;
         }
 
         // Update is called once per frame
@@ -63,6 +82,12 @@ namespace CapedHorse.BallBattle
             {
                 case State.Inactive:
                     ResetAnimation();
+                    collider.enabled = false;
+                    DOVirtual.DelayedCall(reactivateTime, () =>
+                    {
+                        collider.enabled = true;
+                        OnChangingState(State.ReturnBack);
+                    });
                     break;
                 case State.StandBy:
                     SetAnimation("StandBy");
@@ -71,7 +96,7 @@ namespace CapedHorse.BallBattle
                     SetAnimation("Chasing");
                     break;
                 case State.ReturnBack:
-                    SetAnimation("Chasing");
+                    SetAnimation("ReturnBack");
 
                     break;
                 default:
@@ -79,7 +104,21 @@ namespace CapedHorse.BallBattle
             }
         }
 
-
+        /// <summary>
+        /// To handle if multiple defender targeting the same attacker.
+        /// </summary>
+        /// <param name="defender"></param>
+        /// <param name="attacker"></param>
+        public void OnAttackerCaught(DefenderSoldier defender, AttackerSoldier attacker)
+        {
+            if (status != State.Chasing)
+                return;
+            if (defender == this)
+                return;
+            if (attacker != target.GetComponent<AttackerSoldier>())
+                return;
+            OnChangingState(State.ReturnBack);
+        }
 
         public void onChild_OnTriggerEnter(Collider myEnteredTrigger, Collider other)
         {
@@ -87,9 +126,13 @@ namespace CapedHorse.BallBattle
             if (other.CompareTag("Attacker"))
             {
                 if(!haveTarget) {
-                    target = other.transform;
-                    OnChangingState(State.Chasing);
-                    haveTarget = true;
+                    if (other.GetComponent<AttackerSoldier>().status == State.HoldingBall)
+                    {
+                        target = other.transform;
+                        OnChangingState(State.Chasing);
+                        haveTarget = true;
+                    }
+                    
                 }
                 
             }
@@ -107,9 +150,10 @@ namespace CapedHorse.BallBattle
 
         void OnTriggerEnter(Collider other) {
             if(other.CompareTag("Attacker")) {
-                OnChangingState(State.ReturnBack);
+                OnChangingState(State.Inactive);
                 target = null;
                 haveTarget = false;
+                EventManager.OnAttackerCaught(this, other.GetComponent<AttackerSoldier>());
             }
         }
     }

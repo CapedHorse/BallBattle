@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 namespace CapedHorse.BallBattle
 {
     public class ControllerUI : MonoBehaviour
     {
+        public RectTransform thisRect;
         public GameManager.Position controllerPosition;
         public Control controller;
         public GameObject barObj;
+
+        public Transform scoreParent;
         public Transform barsParent;
+
+
         public TextMeshProUGUI energyControllerNameText;
         public GameObject notTurnOverlay;
 
@@ -30,6 +36,8 @@ namespace CapedHorse.BallBattle
         void Start()
         {
             //Init();
+
+
         }
 
         void OnEnable()
@@ -64,6 +72,8 @@ namespace CapedHorse.BallBattle
             barObj.SetActive(false);
 
             controller = GameManager.instance.controllers.Find(x => x.position == controllerPosition);
+
+            thisRect.anchoredPosition = controllerPosition == GameManager.Position.Attacker ? UIManager.instance.attackerUIStart : UIManager.instance.defenderUIStart;
         }
 
         /// <summary>
@@ -130,6 +140,52 @@ namespace CapedHorse.BallBattle
             {
                 
             }
+        }
+
+        /// <summary>
+        /// Rearrange UI layout based on controller's position.
+        /// </summary>
+        public void SwitchSides()
+        {
+            controllerPosition = controller.position;
+            var sibblingId = 0;
+            var energyBarRotate = 0f;
+            var tweenStartPos = new Vector2();
+            var tweenToPos = new Vector2();
+            switch (controllerPosition)
+            {
+                case GameManager.Position.Attacker:
+                    tweenStartPos = UIManager.instance.attackerUIStart;
+                    tweenToPos = UIManager.instance.attackerUITo;
+                    thisRect.SetParent(UIManager.instance.attackerUIParent);
+                    break;
+                case GameManager.Position.Defender:
+                    sibblingId = 1;
+                    energyBarRotate = 180f;
+                    tweenStartPos = UIManager.instance.defenderUIStart;
+                    tweenToPos = UIManager.instance.defenderUITo;                    
+                    thisRect.SetParent(UIManager.instance.defenderUIParent);
+                    break;
+                default:
+                    break;
+            }
+
+            scoreParent.SetSiblingIndex(sibblingId);
+            barsParent.SetSiblingIndex(sibblingId);
+            barsParent.localEulerAngles = new Vector3(0, 0, energyBarRotate);
+            TweenToUI(tweenStartPos, tweenToPos);
+        }
+
+        public void TweenToUI(Vector2 from, Vector2 to )
+        {
+            Sequence seq = DOTween.Sequence();
+            seq.Append(thisRect.DOAnchorPos(from, 0));
+            seq.Append(thisRect.DOAnchorPos(to, 0.25f));
+        }
+
+        public void SetPenaltyMode()
+        {
+
         }
 
         // Update is called once per frame

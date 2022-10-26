@@ -6,10 +6,10 @@ namespace CapedHorse.BallBattle
 {
     public class Control : MonoBehaviour
     {
-        public enum ControlType { PLAYER, AI}
+        public enum ControlType { Player, Enemy}
         public ControlType controlType;
         public GameManager.Position position;
-        public Goal thisGoal;
+        public Goal thisGoal, oppositeGoal;
 
         public enum Status { Loose, HoldingBall }
         public Status status;
@@ -57,17 +57,7 @@ namespace CapedHorse.BallBattle
         {
             if (isInTurn)
             {
-                switch (controlType)
-                {
-                    case ControlType.PLAYER:
-                        OnTouchOrMouseDown();
-                        break;
-                    case ControlType.AI:
-                        //Have different behaviour
-                        break;
-                    default:
-                        break;
-                }
+                OnTouchOrMouseDown();
             }
             
         }
@@ -128,8 +118,15 @@ namespace CapedHorse.BallBattle
             if (soldier == Utility.NearestToTarget(soldiers, GameManager.instance.ball.transform))
             {
                 soldier.ChaseBall();
+            }            
+        }
+
+        public void PassingBall(AttackerSoldier soldier)
+        {
+            if (Utility.NearestToTarget(soldiers, GameManager.instance.ball.transform) == null)
+            {
+                EventManager.OnNoBallPasses?.Invoke(this);
             }
-            
         }
     }
 }

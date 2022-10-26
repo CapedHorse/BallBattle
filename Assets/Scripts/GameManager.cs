@@ -16,13 +16,15 @@ namespace CapedHorse.BallBattle
 
         [Header("Object Refs")]
         public Transform field;
+        public Camera mainCamera;
+        public BoxCollider fieldCollider;
         public Transform attackersParent, defendersParent;
         public Transform attackerTargetGate;
         public AttackerSoldier attackerPrefab;
         public DefenderSoldier defenderSoldier;
         public Ball ball;
         public List<SoldierCostume> costumes;
-
+        public Dictionary<string, SoldierCostume> costumeTable;
 
         [Header("Stats")]
         public List<Control> controllers;
@@ -45,6 +47,12 @@ namespace CapedHorse.BallBattle
             {
                 Destroy(gameObject);
                 return;
+            }
+
+            costumeTable = new Dictionary<string, SoldierCostume>();
+            foreach (var item in costumes)
+            {
+                costumeTable.Add(item.name, item);
             }
         }
         // Start is called before the first frame update
@@ -166,7 +174,9 @@ namespace CapedHorse.BallBattle
 
             spawner.CostingEnergy(soldier.spawnEnergyCost);
             soldier.transform.position = spawnedPosition;
+            soldier.transform.eulerAngles = spawner.position == Position.Attacker ? Vector3.zero : new Vector3(0, 180, 0);
             soldier.controller = spawner;
+            ChangingCostume(soldier);
             spawnedSoldiers.Add(soldier);
             spawner.soldiers.Add(soldier);
             soldier = null;
@@ -175,13 +185,13 @@ namespace CapedHorse.BallBattle
 
         public void ChangingCostume(Soldier soldier)
         {
-            soldier.GetComponent<MeshRenderer>().materials[0] = costumes.Find(x => x.name == soldier.controller.position.ToString()).headMat;
-            soldier.GetComponent<MeshRenderer>().materials[1] = costumes.Find(x => x.name == soldier.controller.position.ToString()).suitMat;
+            soldier.mesh.materials[0] = costumeTable[soldier.controller.controlType.ToString()].headMat;
+            soldier.mesh.materials[1] = costumeTable[soldier.controller.controlType.ToString()].suitMat;
         }
 
         public void SetInactiveSuit(Soldier soldier, float inactiveTime) {
-            soldier.GetComponent<MeshRenderer>().materials[0] = costumes.Find(x => x.name == "Inactive").headMat;
-            soldier.GetComponent<MeshRenderer>().materials[1] = costumes.Find(x => x.name == "Inactive").suitMat;
+            soldier.mesh.materials[0] = costumes.Find(x => x.name == "Inactive").headMat;
+            soldier.mesh.materials[1] = costumes.Find(x => x.name == "Inactive").suitMat;
             DOVirtual.DelayedCall(inactiveTime, () => ChangingCostume(soldier));
         }
 

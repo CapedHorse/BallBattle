@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
+using DG.Tweening;
 
 namespace CapedHorse.BallBattle
 {
@@ -12,8 +13,19 @@ namespace CapedHorse.BallBattle
 
         public Canvas mainCanvas;
 
-        public Transform attackerEnergyParent;
-        public Transform defenderEnergyParent;
+        public Transform attackerUIParent;
+        public Transform defenderUIParent;
+        public Transform countDownTweenParent;
+        public RectTransform timerParent;
+        public RectTransform menuParent;
+
+        //controller UI tweening position properties
+        public Vector2
+            defenderUIStart,
+            defenderUITo,
+            attackerUIStart,
+            attackerUITo;
+
 
         public GameObject countDownParent;
         public TextMeshProUGUI countDownText;
@@ -36,7 +48,10 @@ namespace CapedHorse.BallBattle
         // Start is called before the first frame update
         void Start()
         {
-    
+            foreach (var item in controllerUIs)
+            {
+                item.Init();
+            }
         }
 
         // Update is called once per frame
@@ -64,22 +79,39 @@ namespace CapedHorse.BallBattle
         /// <returns></returns>
         public IEnumerator CountingDown(UnityAction afterCountDown)
         {
+            var initTimerPos = timerParent.anchoredPosition;
+            timerParent.anchoredPosition = new Vector2(initTimerPos.x* -1, initTimerPos.y);
+
+            var initMenuPos = menuParent.anchoredPosition;
+            menuParent.anchoredPosition = new Vector2(initMenuPos.x * -2, initMenuPos.y);
             countDownParent.SetActive(true);
-            countDownText.text = "3";
+            TweenCountDown("3");
             yield return new WaitForSeconds(1);
-            countDownText.text = "2";
+            TweenCountDown("2");
             yield return new WaitForSeconds(1);
-            countDownText.text = "1";
+            TweenCountDown("1");
             yield return new WaitForSeconds(1);
-            countDownText.text = "GO!";
+            TweenCountDown("GO!");
             yield return new WaitForSeconds(1);
             countDownParent.SetActive(false);
             foreach (var item in controllerUIs)
             {
-                item.Init();
+                item.SwitchSides();
             }
+
+            timerParent.DOAnchorPos(initTimerPos, 0.25f);
+            menuParent.DOAnchorPos(initMenuPos, 0.25f);
+
             afterCountDown?.Invoke();
         }
+
+        public void TweenCountDown(string text)
+        {
+            countDownText.text = text;
+            countDownTweenParent.DOPunchScale(Vector3.one * 0.5f, 0.25f, 1, 1);
+        }
+
+        
     }
 }
 

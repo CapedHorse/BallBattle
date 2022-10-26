@@ -15,10 +15,27 @@ namespace CapedHorse.BallBattle
 
         }
 
+        void OnEnable()
+        {
+            
+            EventManager.OnBallHolded += Hold;
+        }
+
+        void OnDisable()
+        {
+            
+            EventManager.OnBallHolded -= Hold;
+        }
         public void Hold(AttackerSoldier soldier)
         {
             transform.SetParent(soldier.transform);
             ballAnim.SetBool("Hold", true);
+        }
+
+        public void Loose()
+        {
+            transform.SetParent(GameManager.instance.field);
+            ballAnim.SetBool("Hold", false);
         }
     }
 }

@@ -32,12 +32,13 @@ namespace CapedHorse.BallBattle
         void OnEnable()
         {
             OnGettingPassed += GettingPassed;
-            
+            EventManager.OnBallHolded += OnBallHolded;
         }
 
         void OnDisable()
         {
             OnGettingPassed -= GettingPassed;
+            EventManager.OnBallHolded -= OnBallHolded;
         }
 
         // Update is called once per frame
@@ -63,7 +64,7 @@ namespace CapedHorse.BallBattle
                     break;
                 case State.ChasingBall:
                     //rb.MovePosition(target.position * 0.001f * normalSpeed * Time.deltaTime);
-                    MoveTo(target.position, carryingSpeed);
+                    MoveTo(target.position, normalSpeed);
                     break;
                 default:
                     break;
@@ -78,6 +79,12 @@ namespace CapedHorse.BallBattle
             {
                 case State.Inactive:
                     ResetAnimation();
+                    collider.enabled = false;
+                    DOVirtual.DelayedCall(reactivateTime, () =>
+                    {
+                        collider.enabled = true;
+                        OnChangingState(State.StraightThrough);
+                    });
                     break;
                 case State.HoldingBall:
                     SetAnimation("HoldingBall");
@@ -113,6 +120,14 @@ namespace CapedHorse.BallBattle
             
         }
 
+        public void OnBallHolded(AttackerSoldier soldier)
+        {
+            if (soldier != this)
+            {
+                OnChangingState(State.StraightThrough);
+            }
+        }
+
 
 
         public void onChild_OnTriggerEnter(Collider myEnteredTrigger, Collider other)
@@ -138,6 +153,7 @@ namespace CapedHorse.BallBattle
                 Debug.Log("Holding Ball Now");
                 OnChangingState(State.HoldingBall);
                 other.GetComponent<Ball>().Hold(this);
+                EventManager.OnBallHolded(this);
             }
 
             if (other.CompareTag("Fence"))
@@ -147,6 +163,13 @@ namespace CapedHorse.BallBattle
                 exploded.SetActive(true);
                 controller.soldiers.Remove(this);
                 Destroy(gameObject, 1);
+            }
+
+            if (other.CompareTag("Defender"))
+            {
+                Debug.Log("Collide With Defender");
+                OnChangingState(State.Inactive);
+
             }
         }
 
