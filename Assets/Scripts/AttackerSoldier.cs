@@ -113,7 +113,25 @@ namespace CapedHorse.BallBattle
             
         }
 
+
+
         public void onChild_OnTriggerEnter(Collider myEnteredTrigger, Collider other)
+        {
+            
+
+        }
+
+        public void onChild_OnTriggerStay(Collider myEnteredTrigger, Collider other)
+        {
+            //throw new System.NotImplementedException();
+        }
+
+        public void onChild_OnTriggerExit(Collider myEnteredTrigger, Collider other)
+        {
+            //throw new System.NotImplementedException();
+        }
+
+        void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Ball"))
             {
@@ -130,22 +148,6 @@ namespace CapedHorse.BallBattle
                 controller.soldiers.Remove(this);
                 Destroy(gameObject, 1);
             }
-
-        }
-
-        public void onChild_OnTriggerStay(Collider myEnteredTrigger, Collider other)
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        public void onChild_OnTriggerExit(Collider myEnteredTrigger, Collider other)
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        void OnTriggerEnter(Collider other)
-        {
-            
         }
 
         

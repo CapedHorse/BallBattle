@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 
 namespace CapedHorse.BallBattle
@@ -172,9 +173,16 @@ namespace CapedHorse.BallBattle
             SetControllerTurn();
         }
 
-        public void ChangingCostume(Soldier soldier, SoldierCostume costume)
+        public void ChangingCostume(Soldier soldier)
         {
+            soldier.GetComponent<MeshRenderer>().materials[0] = costumes.Find(x => x.name == soldier.controller.position.ToString()).headMat;
+            soldier.GetComponent<MeshRenderer>().materials[1] = costumes.Find(x => x.name == soldier.controller.position.ToString()).suitMat;
+        }
 
+        public void SetInactiveSuit(Soldier soldier, float inactiveTime) {
+            soldier.GetComponent<MeshRenderer>().materials[0] = costumes.Find(x => x.name == "Inactive").headMat;
+            soldier.GetComponent<MeshRenderer>().materials[1] = costumes.Find(x => x.name == "Inactive").suitMat;
+            DOVirtual.DelayedCall(inactiveTime, () => ChangingCostume(soldier));
         }
 
         [System.Serializable]

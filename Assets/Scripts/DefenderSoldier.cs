@@ -11,6 +11,8 @@ namespace CapedHorse.BallBattle
         //variables
         public float returnSpeed;
         public float detectionRangeFromWidth;
+        public Vector3 initialPosition;
+        public bool haveTarget;
 
         [Header("Defender Object Refs")]
         public GameObject detectionRadius;
@@ -19,7 +21,10 @@ namespace CapedHorse.BallBattle
         // Start is called before the first frame update
         void Start()
         {
-            StartCoroutine(BaseStart(() => OnChangingState(State.StandBy)));
+            StartCoroutine(BaseStart(() =>  {
+                OnChangingState(State.StandBy); 
+                initialPosition = transform.position;
+                }));
         }
 
         // Update is called once per frame
@@ -35,6 +40,12 @@ namespace CapedHorse.BallBattle
                 case State.StandBy:
                     break;
                 case State.ReturnBack:
+                    if(transform.position != initialPosition) {
+                        MoveTo(initialPosition, normalSpeed);
+                    } else
+                    {
+                        OnChangingState(State.StandBy);
+                    }
                     break;
                 case State.Chasing:
                     MoveTo(target.position, normalSpeed);
@@ -60,19 +71,27 @@ namespace CapedHorse.BallBattle
                     SetAnimation("Chasing");
                     break;
                 case State.ReturnBack:
+                    SetAnimation("Chasing");
+
                     break;
                 default:
                     break;
             }
         }
 
+
+
         public void onChild_OnTriggerEnter(Collider myEnteredTrigger, Collider other)
         {
             Debug.Log("Entered detection radius");
             if (other.CompareTag("Attacker"))
             {
-                target = other.transform;
-                OnChangingState(State.Chasing);
+                if(!haveTarget) {
+                    target = other.transform;
+                    OnChangingState(State.Chasing);
+                    haveTarget = true;
+                }
+                
             }
         }
 
@@ -84,6 +103,14 @@ namespace CapedHorse.BallBattle
         public void onChild_OnTriggerStay(Collider myEnteredTrigger, Collider other)
         {
             //Debug.Log("Stayed detection radius");
+        }
+
+        void OnTriggerEnter(Collider other) {
+            if(other.CompareTag("Attacker")) {
+                OnChangingState(State.ReturnBack);
+                target = null;
+                haveTarget = false;
+            }
         }
     }
 }
