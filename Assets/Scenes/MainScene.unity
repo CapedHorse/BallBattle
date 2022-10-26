@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.4366757, g: 0.48427194, b: 0.5645252, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -131,7 +131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2968943}
   m_Layer: 0
-  m_Name: Defender Field
+  m_Name: Enemy Field
   m_TagString: DefenderArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -347,6 +347,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controlType: 0
   position: 1
+  thisGoal: {fileID: 354268778}
+  status: 0
   raycastLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -363,7 +365,7 @@ GameObject:
   m_Component:
   - component: {fileID: 83076369}
   m_Layer: 0
-  m_Name: Attacker Field
+  m_Name: Player Field
   m_TagString: AttackerArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -806,6 +808,7 @@ GameObject:
   - component: {fileID: 354268777}
   - component: {fileID: 354268776}
   - component: {fileID: 354268775}
+  - component: {fileID: 354268778}
   m_Layer: 0
   m_Name: Enemy Gate
   m_TagString: Gate
@@ -887,6 +890,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 354268773}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &354268778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354268773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441a9ce954835334bb92b46b7fc3ac8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 0}
 --- !u!1 &358495771
 GameObject:
   m_ObjectHideFlags: 0
@@ -1570,6 +1586,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controlType: 0
   position: 0
+  thisGoal: {fileID: 1808689418}
+  status: 0
   raycastLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -3481,9 +3499,9 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!95 &1450366279
 Animator:
@@ -3530,7 +3548,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   status: 0
-  ballAnim: {fileID: 0}
+  ballAnim: {fileID: 1450366279}
 --- !u!1 &1524943284
 GameObject:
   m_ObjectHideFlags: 0
@@ -3926,6 +3944,7 @@ GameObject:
   - component: {fileID: 1808689417}
   - component: {fileID: 1808689416}
   - component: {fileID: 1808689415}
+  - component: {fileID: 1808689418}
   m_Layer: 0
   m_Name: Player Gate
   m_TagString: Gate
@@ -4007,6 +4026,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1808689413}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1808689418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1808689413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 441a9ce954835334bb92b46b7fc3ac8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 0}
 --- !u!1 &1847282346
 GameObject:
   m_ObjectHideFlags: 0
@@ -4445,7 +4477,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -4501,13 +4533,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1951588443}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 6.76, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 506924041}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &1966305971
 GameObject:
   m_ObjectHideFlags: 0
@@ -4698,7 +4730,7 @@ PrefabInstance:
     - target: {fileID: 2248836095218684174, guid: 96c4c42b0c8fd6b40bcf9bc0be255568,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 1.88
       objectReference: {fileID: 0}
     - target: {fileID: 2248836095218684174, guid: 96c4c42b0c8fd6b40bcf9bc0be255568,
         type: 3}
@@ -4748,7 +4780,17 @@ PrefabInstance:
     - target: {fileID: 2248836095218684175, guid: 96c4c42b0c8fd6b40bcf9bc0be255568,
         type: 3}
       propertyPath: m_Name
-      value: Attacker Soldier
+      value: Player Soldier
+      objectReference: {fileID: 0}
+    - target: {fileID: 2248836095218684175, guid: 96c4c42b0c8fd6b40bcf9bc0be255568,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6943953398641512819, guid: 96c4c42b0c8fd6b40bcf9bc0be255568,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96c4c42b0c8fd6b40bcf9bc0be255568, type: 3}
@@ -4841,6 +4883,11 @@ PrefabInstance:
       objectReference: {fileID: 354268774}
     - target: {fileID: 2785106351281118903, guid: 0d779ee268b621a4aa0eccd33febd579,
         type: 3}
+      propertyPath: costumes.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2785106351281118903, guid: 0d779ee268b621a4aa0eccd33febd579,
+        type: 3}
       propertyPath: controllers.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -4854,6 +4901,51 @@ PrefabInstance:
       propertyPath: controllers.Array.data[1]
       value: 
       objectReference: {fileID: 44872713}
+    - target: {fileID: 2785106351281118903, guid: 0d779ee268b621a4aa0eccd33febd579,
+        type: 3}
+      propertyPath: costumes.Array.data[0].name
+      value: Attacker
+      objectReference: {fileID: 0}
+    - target: {fileID: 2785106351281118903, guid: 0d779ee268b621a4aa0eccd33febd579,
+        type: 3}
+      propertyPath: costumes.Array.data[1].name
+      value: Defender
+      objectReference: {fileID: 0}
+    - target: {fileID: 2785106351281118903, guid: 0d779ee268b621a4aa0eccd33febd579,
+        type: 3}
+      propertyPath: costumes.Array.data[2].name
+      value: Inactive
+      objectReference: {fileID: 0}
+    - target: {fileID: 2785106351281118903, guid: 0d779ee268b621a4aa0eccd33febd579,
+        type: 3}
+      propertyPath: costumes.Array.data[0].headMat
+      value: 
+      objectReference: {fileID: 2100000, guid: c066cf9fdb5ad7e4db22dbb6cd0d8cf0, type: 2}
+    - target: {fileID: 2785106351281118903, guid: 0d779ee268b621a4aa0eccd33febd579,
+        type: 3}
+      propertyPath: costumes.Array.data[0].suitMat
+      value: 
+      objectReference: {fileID: 2100000, guid: 6a3825ee69b6e754c8870047c6b0370c, type: 2}
+    - target: {fileID: 2785106351281118903, guid: 0d779ee268b621a4aa0eccd33febd579,
+        type: 3}
+      propertyPath: costumes.Array.data[1].headMat
+      value: 
+      objectReference: {fileID: 2100000, guid: 54159df231aad10448ed33138c3453ac, type: 2}
+    - target: {fileID: 2785106351281118903, guid: 0d779ee268b621a4aa0eccd33febd579,
+        type: 3}
+      propertyPath: costumes.Array.data[1].suitMat
+      value: 
+      objectReference: {fileID: 2100000, guid: f0a2b7fe47e319f4491887aa88ff96da, type: 2}
+    - target: {fileID: 2785106351281118903, guid: 0d779ee268b621a4aa0eccd33febd579,
+        type: 3}
+      propertyPath: costumes.Array.data[2].headMat
+      value: 
+      objectReference: {fileID: 2100000, guid: 7b781d0772db27348ba2134406f8470a, type: 2}
+    - target: {fileID: 2785106351281118903, guid: 0d779ee268b621a4aa0eccd33febd579,
+        type: 3}
+      propertyPath: costumes.Array.data[2].suitMat
+      value: 
+      objectReference: {fileID: 2100000, guid: 1b84c76fa4ee01c4fa0b68c68f9cf316, type: 2}
     - target: {fileID: 2785106351281118905, guid: 0d779ee268b621a4aa0eccd33febd579,
         type: 3}
       propertyPath: m_Name
@@ -5312,6 +5404,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Defender Soldier
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500481251269879152, guid: c4d4ddc70ae42d94293e0a7af70a37fc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4d4ddc70ae42d94293e0a7af70a37fc, type: 3}

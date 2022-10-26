@@ -13,6 +13,9 @@ TagManager:
   - AttackerArea
   - DefenderArea
   - Side
+  - FxTemporaire
+  - DefenderDetector
+  - AttackerDetector
   layers:
   - Default
   - TransparentFX

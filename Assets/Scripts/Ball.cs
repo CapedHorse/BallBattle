@@ -9,22 +9,16 @@ namespace CapedHorse.BallBattle
         public enum State { Hold, Idle }
         public State status;
         public Animator ballAnim;
-
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
+                
         public void Passed(Transform target)
         {
 
+        }
+
+        public void Hold(AttackerSoldier soldier)
+        {
+            transform.SetParent(soldier.transform);
+            ballAnim.SetBool("Hold", true);
         }
     }
 }

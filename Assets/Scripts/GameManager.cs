@@ -20,6 +20,7 @@ namespace CapedHorse.BallBattle
         public AttackerSoldier attackerPrefab;
         public DefenderSoldier defenderSoldier;
         public Ball ball;
+        public List<SoldierCostume> costumes;
 
 
         [Header("Stats")]
@@ -29,9 +30,7 @@ namespace CapedHorse.BallBattle
         public float currentPlayTime;
 
         public Control currentTurn;
-        public Control currentAttacker;
-        
-        
+        public Control currentAttacker;       
 
         public List<Soldier> spawnedSoldiers;
 
@@ -158,7 +157,7 @@ namespace CapedHorse.BallBattle
                         return;
                     }
                     soldier = Instantiate(defenderSoldier, defendersParent);
-                    soldier.transform.LookAt(defendersParent);
+                    soldier.transform.LookAt(defendersParent);  
                     break;
                 default:
                     break;
@@ -166,9 +165,24 @@ namespace CapedHorse.BallBattle
 
             spawner.CostingEnergy(soldier.spawnEnergyCost);
             soldier.transform.position = spawnedPosition;
+            soldier.controller = spawner;
             spawnedSoldiers.Add(soldier);
-
+            spawner.soldiers.Add(soldier);
+            soldier = null;
             SetControllerTurn();
+        }
+
+        public void ChangingCostume(Soldier soldier, SoldierCostume costume)
+        {
+
+        }
+
+        [System.Serializable]
+        public class SoldierCostume
+        {
+            public string name;
+            public Material headMat;
+            public Material suitMat;
         }
     }
 }

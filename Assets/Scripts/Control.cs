@@ -9,7 +9,11 @@ namespace CapedHorse.BallBattle
         public enum ControlType { PLAYER, AI}
         public ControlType controlType;
         public GameManager.Position position;
-        
+        public Goal thisGoal;
+
+        public enum Status { Loose, HoldingBall }
+        public Status status;
+
         public LayerMask raycastLayer;
 
         public List<Soldier> soldiers;
@@ -26,13 +30,13 @@ namespace CapedHorse.BallBattle
         void OnEnable()
         {
             EventManager.SetTurn += InTurn;
-            EventManager.OnNearestToBall += CheckNearestToBall;
+            EventManager.OnNearestToBall += CheckIfNearBall;
         }
 
         void OnDisable()
         {
             EventManager.SetTurn -= InTurn;
-            EventManager.OnNearestToBall -= CheckNearestToBall;
+            EventManager.OnNearestToBall -= CheckIfNearBall;
         }
 
         void InTurn(Control control)
@@ -112,19 +116,20 @@ namespace CapedHorse.BallBattle
             EventManager.OnCostingEnergy(this, energyCost);
         }
 
-        public void CheckNearestToBall()
+        public void CheckIfNearBall(AttackerSoldier soldier)
         {
-            if (position == GameManager.Position.Attacker)
-            {
-                for (int i = 0; i < soldiers.Count; i++)
-                {
-                    var soldier = soldiers[i];
-                    if (soldier.status == Soldier.State.StraightThrough)
-                    {
+            if (status == Status.HoldingBall)
+                return;
 
-                    }
-                }
-            }            
+            if (position != GameManager.Position.Attacker)            
+                return;
+
+            Debug.Log("If near by ball");
+            if (soldier == Utility.NearestToTarget(soldiers, GameManager.instance.ball.transform))
+            {
+                soldier.ChaseBall();
+            }
+            
         }
     }
 }

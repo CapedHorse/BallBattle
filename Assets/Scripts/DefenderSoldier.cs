@@ -6,8 +6,7 @@ namespace CapedHorse.BallBattle
 {
     public class DefenderSoldier : Soldier, IOnTriggerNotifiable
     {
-        
-        
+               
 
         //variables
         public float returnSpeed;
@@ -26,7 +25,23 @@ namespace CapedHorse.BallBattle
         // Update is called once per frame
         void Update()
         {
+            if (!GameManager.instance.isPlaying)
+                return;
 
+            switch (status)
+            {
+                case State.Inactive:
+                    break;
+                case State.StandBy:
+                    break;
+                case State.ReturnBack:
+                    break;
+                case State.Chasing:
+                    MoveTo(target.position, normalSpeed);
+                    break;
+                default:
+                    break;
+            }
         }
 
         public override void OnChangingState(State state)
@@ -36,11 +51,15 @@ namespace CapedHorse.BallBattle
             switch (state)
             {
                 case State.Inactive:
-                    anim.SetBool("Inactive", true);
+                    ResetAnimation();
                     break;
                 case State.StandBy:
+                    SetAnimation("StandBy");
                     break;
                 case State.Chasing:
+                    SetAnimation("Chasing");
+                    break;
+                case State.ReturnBack:
                     break;
                 default:
                     break;
@@ -50,6 +69,11 @@ namespace CapedHorse.BallBattle
         public void onChild_OnTriggerEnter(Collider myEnteredTrigger, Collider other)
         {
             Debug.Log("Entered detection radius");
+            if (other.CompareTag("Attacker"))
+            {
+                target = other.transform;
+                OnChangingState(State.Chasing);
+            }
         }
 
         public void onChild_OnTriggerExit(Collider myEnteredTrigger, Collider other)

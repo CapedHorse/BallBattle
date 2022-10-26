@@ -13,7 +13,9 @@ namespace CapedHorse.BallBattle
         public static UnityAction<Control, GameManager.Position> SetPosition;
         public static UnityAction<Control, Vector3> OnSpawning;
         public static UnityAction<Control, float> OnCostingEnergy;
-        public static UnityAction OnNearestToBall;
+        public static UnityAction<AttackerSoldier> OnNearestToBall;
+        public static UnityAction<Control> OnNearestToToPass;
+        public static UnityAction<AttackerSoldier> OnBallHolded;
 
         void Awake()
         {

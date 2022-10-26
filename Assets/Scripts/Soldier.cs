@@ -8,12 +8,16 @@ namespace CapedHorse.BallBattle
 {
     public class Soldier : MonoBehaviour
     {
-        public enum State { Inactive, StandBy, Chasing, PassedBall, HoldingBall, StraightThrough }
+        public enum State { Inactive, StandBy, Chasing, ReturnBack, PassedBall, HoldingBall, StraightThrough, ChasingBall }
         public State status = State.Inactive;
         //object cache
         [Header("Object References")]
+        public Control controller;
         public Transform modelParent;
+        public Transform indicator;
         public Animator anim;
+        public Rigidbody rb;
+        
         //vfx
         public GameObject puffShow;
         public GameObject exploded;
@@ -27,7 +31,7 @@ namespace CapedHorse.BallBattle
         public float reactivateTime;
         public float normalSpeed;
 
-        
+        public Transform target;
 
 
         /// <summary>
@@ -35,6 +39,7 @@ namespace CapedHorse.BallBattle
         /// </summary>
         public IEnumerator BaseStart(UnityAction afterInactive)
         {
+            puffShow.SetActive(true);
             yield return new WaitForSeconds(3);
             OnChangingState(State.Inactive);
             yield return new WaitForSeconds(spawnTime);
@@ -49,8 +54,39 @@ namespace CapedHorse.BallBattle
 
         public virtual void OnChangingState(State state)
         {
-            status = state;
-            
+            status = state;            
+        }
+
+        public void MoveTo(Vector3 target, float speed)
+        {
+            target.y = 0;
+            transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+            transform.LookAt(new Vector3(0, target.y, 0)); //sometimes the rotation is not right
+            RotateDirection(target);
+        }
+
+        public void RotateDirection(Vector3 target)
+        {
+            indicator.LookAt(new Vector3(0, target.y, 0));
+        }
+
+        public void SetAnimation(string state)
+        {
+            ResetAnimation();
+            anim.SetBool(state, true);
+        }
+
+        public void ResetAnimation()
+        {
+            foreach (var item in System.Enum.GetValues(typeof(State)))
+            {
+                //Debug.Log(item.ToString());
+                if (!item.Equals(State.Inactive))
+                {
+                    anim.SetBool(item.ToString(), false);
+                }
+
+            }
         }
 
         

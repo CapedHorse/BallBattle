@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using DG.Tweening;
 
 namespace CapedHorse.BallBattle
 {
-    public class AttackerSoldier : Soldier
+    public class AttackerSoldier : Soldier, IOnTriggerNotifiable
     {        
         //variables
         public float carryingSpeed;
@@ -13,7 +14,7 @@ namespace CapedHorse.BallBattle
         bool gettingPassed;
 
         [Header("Attacker Object Refs")]
-        public Transform target;
+        
         public Transform ballTarget;
 
         public UnityAction<AttackerSoldier> OnGettingPassed;
@@ -24,14 +25,14 @@ namespace CapedHorse.BallBattle
             StartCoroutine(BaseStart(() =>
             {
                 OnChangingState(State.StraightThrough);
-                EventManager.OnNearestToBall?.Invoke();
-            }
-            ));
+                EventManager.OnNearestToBall?.Invoke(this);
+            }));
         }
 
         void OnEnable()
         {
             OnGettingPassed += GettingPassed;
+            
         }
 
         void OnDisable()
@@ -40,11 +41,32 @@ namespace CapedHorse.BallBattle
         }
 
         // Update is called once per frame
+
+        //moving logic is false
         void Update()
         {
-            if (status == State.PassedBall)
+            if (!GameManager.instance.isPlaying)
+                return;
+            switch (status)
             {
-
+                case State.Inactive:
+                    break;
+                case State.PassedBall:
+                    break;
+                case State.HoldingBall:
+                    //rb.MovePosition(target.position * 0.001f * normalSpeed * Time.deltaTime);
+                    MoveTo(target.position, carryingSpeed);
+                    break;
+                case State.StraightThrough:
+                    MoveTo(new Vector3(transform.position.x, target.position.y, target.position.z), normalSpeed);
+                    //rb.MovePosition(new Vector3(transform.position.x, target.position.y, target.position.z) * 0.001f * normalSpeed * Time.deltaTime);
+                    break;
+                case State.ChasingBall:
+                    //rb.MovePosition(target.position * 0.001f * normalSpeed * Time.deltaTime);
+                    MoveTo(target.position, carryingSpeed);
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -55,14 +77,22 @@ namespace CapedHorse.BallBattle
             switch (state)
             {
                 case State.Inactive:
-                    anim.SetBool("Inactive", true);
+                    ResetAnimation();
                     break;
                 case State.HoldingBall:
+                    SetAnimation("HoldingBall");
+                    target = GameManager.instance.attackerTargetGate;
+                    break;
+                case State.ChasingBall:
+                    SetAnimation("ChasingBall");
+                    target = GameManager.instance.ball.transform;
                     break;
                 case State.StraightThrough:
+                    SetAnimation("StraightThrough");
+                    target = GameManager.instance.attackerTargetGate;
                     break;
                 case State.PassedBall:
-                    anim.SetBool("Passed", true);
+                    SetAnimation("PassedBall");
                     break;
                 default:
                     break;
@@ -75,6 +105,52 @@ namespace CapedHorse.BallBattle
             OnChangingState(State.PassedBall);
 
         }
+
+        public void ChaseBall()
+        {
+            OnChangingState(State.ChasingBall);
+
+            
+        }
+
+        public void onChild_OnTriggerEnter(Collider myEnteredTrigger, Collider other)
+        {
+            if (other.CompareTag("Ball"))
+            {
+                Debug.Log("Holding Ball Now");
+                OnChangingState(State.HoldingBall);
+                other.GetComponent<Ball>().Hold(this);
+            }
+
+            if (other.CompareTag("Fence"))
+            {
+                Debug.Log("Entering Fence");
+                OnChangingState(State.Inactive);
+                exploded.SetActive(true);
+                controller.soldiers.Remove(this);
+                Destroy(gameObject, 1);
+            }
+
+        }
+
+        public void onChild_OnTriggerStay(Collider myEnteredTrigger, Collider other)
+        {
+            //throw new System.NotImplementedException();
+        }
+
+        public void onChild_OnTriggerExit(Collider myEnteredTrigger, Collider other)
+        {
+            //throw new System.NotImplementedException();
+        }
+
+        void OnTriggerEnter(Collider other)
+        {
+            
+        }
+
+        
+
+        
     }
 }
 
