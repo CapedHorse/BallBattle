@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "RR8R801J99A",
         "name": "com.capedhorse.BallBattle",
-        "processId": 11693,
+        "processId": 4358,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -60,6 +60,12 @@
             "deviceId": "RR8R801J99A",
             "name": "com.capedhorse.BallBattle",
             "processId": 11693,
+            "exited": false
+        },
+        {
+            "deviceId": "RR8R801J99A",
+            "name": "com.capedhorse.BallBattle",
+            "processId": 4358,
             "exited": false
         }
     ],

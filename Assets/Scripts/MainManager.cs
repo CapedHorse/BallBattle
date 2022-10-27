@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Vuforia;
+using UnityEngine.Events;
 #if UNITY_ANDROID
 using UnityEngine.Android;
 #elif UNITY_IPHONE
@@ -44,7 +46,7 @@ namespace CapedHorse.BallBattle
         /// <summary>
         /// Will ask permision for camera first, if granted, then open AR Scene
         /// </summary>
-        public void PlayGame()
+        public void PlayGameARMode()
         {
             CheckIfCameraPermissionGranted();
             if (grantedCamera)
@@ -55,6 +57,43 @@ namespace CapedHorse.BallBattle
             {
                 SceneManager.LoadScene("MainScene");
             }
+        }
+
+        UnityAction afterLoaded;
+        /// <summary>
+        /// Cache the action after loaded, will be invoked once main scene is loaded
+        /// </summary>
+        /// <param name="_afterLoaded"></param>
+        public void LoadGameToAR(UnityAction _afterLoaded)
+        {
+            afterLoaded = _afterLoaded;
+            SceneManager.LoadScene("MainScene", LoadSceneMode.Additive);
+            SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+        }
+
+        /// <summary>
+        /// Callback when main scene is done loaded, will invoke an action
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <param name="mode"></param>
+        private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (scene.name == "MainScene")
+            {
+                afterLoaded?.Invoke();
+                afterLoaded = null;
+                SceneManager.sceneLoaded -= SceneManager_sceneLoaded;
+            }
+        }
+
+        public void PlayGameNormalMode()
+        {
+            SceneManager.LoadScene("MainScene");
+        }
+
+        public void BackToHomeScene()
+        {
+            SceneManager.LoadScene("MenuScene");
         }
 
         public void QuitGame()
@@ -68,11 +107,16 @@ namespace CapedHorse.BallBattle
             paused = true;
         }
 
+#if FUSION_PROVIDER_VUFORIA_VISION_ONLY
+
+#endif
+
         /// <summary>
         /// Checking if user has granted camera or not. Different trait for each platform.
         /// </summary>
         public void CheckIfCameraPermissionGranted()
         {
+            
 #if UNITY_ANDROID
 
             if (!Permission.HasUserAuthorizedPermission(Permission.Camera))
@@ -109,6 +153,22 @@ namespace CapedHorse.BallBattle
         {
             grantedCamera = false;
             //permissionCallbacks.PermissionDenied -= Callbacks_PermissionDenied;
+        }
+
+        public bool IsDeviceSupported
+        {
+            get
+            {
+                if (VuforiaRuntimeUtilities.GetActiveFusionProvider() == FusionProviderType.VISION_ONLY)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            
         }
     }
 }

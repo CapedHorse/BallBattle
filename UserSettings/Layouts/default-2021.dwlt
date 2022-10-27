@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 997
   m_ShowMode: 4
-  m_Title: Android Logcat
+  m_Title: Project
   m_RootView: {fileID: 7}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -39,9 +39,9 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 1000
+    x: 970
     y: 0
-    width: 466
+    width: 496
     height: 670
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
@@ -74,7 +74,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 200}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 111
+  controlID: 125
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -250,7 +250,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 1
-  controlID: 112
+  controlID: 126
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -276,7 +276,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 8096}
   vertical: 0
-  controlID: 113
+  controlID: 127
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -294,7 +294,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 363
     y: 0
-    width: 637
+    width: 607
     height: 670
   m_MinSize: {x: 102, y: 121}
   m_MaxSize: {x: 4002, y: 4021}
@@ -354,7 +354,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 363
     y: 73
-    width: 635
+    width: 605
     height: 649
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
@@ -402,22 +402,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Resources
+    - Assets
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Resources
+  - Assets
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\Unity Project\Ball Battle
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 516}
-    m_SelectedIDs: 5c660000
-    m_LastClickedID: 26204
-    m_ExpandedIDs: 000000000a6200006e6200001063000012630000c6640000c8640000ca6400001c65000032650000aa6500004a6600007c6600007e660000108100001a81000000ca9a3bffffff7f
+    scrollPos: {x: 0, y: 612}
+    m_SelectedIDs: 006b0000
+    m_LastClickedID: 27392
+    m_ExpandedIDs: 00000000006b0000c66c0000e46c00001a6d0000606d000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -445,7 +445,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000000a620000
+    m_ExpandedIDs: 00000000006b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -472,8 +472,8 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c6230000
+    m_HadKeyboardFocusLastEvent: 0
+    m_ExpandedInstanceIDs: c62300009c020000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -575,23 +575,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: 24180000
       m_LastClickedID: 0
-      m_ExpandedIDs: 203fffff623fffff0245ffff1446ffff2446fffffe68ffffb469ffffb66fffffcc70ffffe070ffff0876ffffc276ffffc47cffffda7dffffee7dffffc285ffff4c86ffff7088ffff7289ffff7e89ffff108cffffc68cffffc492ffffd693ffffe693ffffc0b7ffffe0b7ffff14b8ffff48b8ffff60b8ffff78b8ffff90b8ffff04c9ffffd0caffff84cdffff72d5ffffbcd5ffff28dcffff2cdcffff7af3ffff2cfbffff66670000ae670000346800003e68000054680000786800008e680000c4680000e4680000ea6800007c6900008c690000c0690000c07a0000d47a00000a7b00006e7b0000087c0000be7c0000367d0000
+      m_ExpandedIDs: 26fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: C_man_1_FBX2013
-        m_OriginalName: C_man_1_FBX2013
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -44452
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 5}
       m_SearchString: 
@@ -624,7 +624,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 363
     y: 73
-    width: 912
+    width: 605
     height: 649
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
@@ -844,14 +844,14 @@ MonoBehaviour:
   m_OverrideSceneCullingMask: 6917529027641081856
   m_SceneIsLit: 1
   m_SceneLighting: 1
-  m_2DMode: 1
+  m_2DMode: 0
   m_isRotationLocked: 0
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 720, y: 1480, z: 0}
+    m_Target: {x: 0, y: 0, z: 0}
     speed: 2
-    m_Value: {x: 0.0053616166, y: 0.792951, z: 0.0017871559}
+    m_Value: {x: 0, y: 0, z: 0}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -880,17 +880,17 @@ MonoBehaviour:
       m_Size: {x: 0, y: 0}
     yGrid:
       m_Fade:
-        m_Target: 0
+        m_Target: 1
         speed: 2
-        m_Value: 0
+        m_Value: 1
       m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
       m_Pivot: {x: 0, y: 0, z: 0}
       m_Size: {x: 1, y: 1}
     zGrid:
       m_Fade:
-        m_Target: 1
+        m_Target: 0
         speed: 2
-        m_Value: 1
+        m_Value: 0
       m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
       m_Pivot: {x: 0, y: 0, z: 0}
       m_Size: {x: 1, y: 1}
@@ -898,17 +898,17 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0, y: 0, z: 0, w: 1}
+    m_Target: {x: -0.1582697, y: 0.7488588, z: -0.19305834, w: -0.6139161}
     speed: 2
-    m_Value: {x: 0, y: 0, z: 0, w: 1}
+    m_Value: {x: -0.15826944, y: 0.74885756, z: -0.19305801, w: -0.6139151}
   m_Size:
-    m_Target: 341.48047
+    m_Target: 0.070710674
     speed: 2
-    m_Value: 0.892187
+    m_Value: 0.070710674
   m_Ortho:
-    m_Target: 1
+    m_Target: 0
     speed: 2
-    m_Value: 1
+    m_Value: 0
   m_CameraSettings:
     m_Speed: 1
     m_SpeedNormalized: 0.5
@@ -922,7 +922,7 @@ MonoBehaviour:
     m_FarClip: 10000
     m_DynamicClip: 1
     m_OcclusionCulling: 0
-  m_LastSceneViewRotation: {x: -0.065445006, y: 0.9208272, z: -0.17643414, w: -0.34156385}
+  m_LastSceneViewRotation: {x: -0.08717229, y: 0.89959055, z: -0.21045254, w: -0.3726226}
   m_LastSceneViewOrtho: 0
   m_ReplacementShader: {fileID: 0}
   m_ReplacementString: 
@@ -979,9 +979,9 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1000
+    x: 970
     y: 73
-    width: 464
+    width: 494
     height: 649
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
@@ -990,7 +990,7 @@ MonoBehaviour:
   m_SerializedViewNames:
   - UnityEditor.DeviceSimulation.SimulatorWindow
   m_SerializedViewValues:
-  - D:\Unity Project\Ball Battle\Library\PlayModeViewStates\c407bdc2bdc1c2240b49eeaadfc04b3f
+  - D:\Unity Project\Ball Battle\Library\PlayModeViewStates\583bc59541578dd42b30e7639fad6234
   m_PlayModeViewName: GameView
   m_ShowGizmos: 0
   m_TargetDisplay: 0
@@ -1020,7 +1020,7 @@ MonoBehaviour:
     m_VAllowExceedBaseRangeMax: 1
     m_ScaleWithWindow: 0
     m_HSlider: 0
-    m_VSlider: 0
+    m_VSlider: 1
     m_IgnoreScrollWheelUntilClicked: 0
     m_EnableMouseInput: 1
     m_EnableSliderZoomHorizontal: 0
@@ -1031,23 +1031,23 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 21
-      width: 464
+      width: 494
       height: 628
-    m_Scale: {x: 0.21216217, y: 0.21216217}
-    m_Translation: {x: 232, y: 314}
+    m_Scale: {x: 0.21925676, y: 0.21925676}
+    m_Translation: {x: 246.99998, y: 314}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -1093.5032
-      y: -1480
-      width: 2187.0063
-      height: 2960
+      x: -1126.5331
+      y: -1432.111
+      width: 2253.0662
+      height: 2864.222
     m_MinimalGUI: 1
-  m_defaultScale: 0.21216217
-  m_LastWindowPixelSize: {x: 464, y: 649}
+  m_defaultScale: 0.21925676
+  m_LastWindowPixelSize: {x: 494, y: 649}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000001000000000000
