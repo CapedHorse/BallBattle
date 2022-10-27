@@ -37,6 +37,21 @@ namespace CapedHorse.BallBattle
 
         public List<Soldier> spawnedSoldiers;
 
+        public Camera MainCamera
+        {
+            get
+            {
+                if (MainManager.instance.grantedCamera)
+                {
+                    return ARSceneManager.instance.arCam;
+                }
+                else
+                {
+                    return mainCamera;
+                }
+            }
+        }
+
         void Awake()
         {
             if (instance == null)
@@ -53,6 +68,11 @@ namespace CapedHorse.BallBattle
             foreach (var item in costumes)
             {
                 costumeTable.Add(item.name, item);
+            }
+
+            if (MainManager.instance.grantedCamera)
+            {
+                mainCamera.gameObject.SetActive(false);
             }
         }
         // Start is called before the first frame update

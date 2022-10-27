@@ -73,7 +73,7 @@ namespace CapedHorse.BallBattle
                 {
                     Debug.Log("Touch Up");
                     var inputLoc = input.position;
-                    var ray = Camera.main.ScreenPointToRay(inputLoc);
+                    var ray = GameManager.instance.MainCamera.ScreenPointToRay(inputLoc);
                     RaycastHit hit;
                     if (Physics.Raycast(ray, out hit, Mathf.Infinity, raycastLayer.value))
                     {
@@ -86,7 +86,7 @@ namespace CapedHorse.BallBattle
             {                 
                 Debug.Log("Mouse Up");
                 var inputLoc = Input.mousePosition;
-                var ray = Camera.main.ScreenPointToRay(inputLoc);
+                var ray = GameManager.instance.MainCamera.ScreenPointToRay(inputLoc);
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, raycastLayer.value))
                 {

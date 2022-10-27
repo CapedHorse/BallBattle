@@ -1,23 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace CapedHorse.BallBattle
 {
-    public class ARSceneManager : MonoBehaviour
+    public class AudioManager : MonoBehaviour
     {
-        public static ARSceneManager instance;
-        public Camera arCam;
-        public GameObject arSceneCanvas;
-        public Button detectGroundPlaneButton;
+        public static AudioManager instance;
+
+        public AudioSource bgmAudio, sfxAudio;
+
+        public List<Audio> audioClips;
+        public Dictionary<string, Audio> audioTable;
+
+        [System.Serializable]
+        public class Audio
+        {
+            public string name;
+            public AudioClip clip;
+        }
 
         void Awake()
         {
             if (instance == null)
             {
                 instance = this;
-
+                DontDestroyOnLoad(gameObject);
             }
             else
             {
@@ -25,7 +33,6 @@ namespace CapedHorse.BallBattle
                 return;
             }
         }
-
         // Start is called before the first frame update
         void Start()
         {

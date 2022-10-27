@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
 using DG.Tweening;
+using UnityEngine.UI;
 
 namespace CapedHorse.BallBattle
 {
@@ -13,6 +14,10 @@ namespace CapedHorse.BallBattle
 
         public Canvas mainCanvas;
 
+        public Button pauseButton;
+        public Toggle ARmodeToggle;
+
+        public GameObject pauseGame;
         public Transform attackerUIParent;
         public Transform defenderUIParent;
         public Transform countDownTweenParent;
@@ -51,6 +56,11 @@ namespace CapedHorse.BallBattle
             foreach (var item in controllerUIs)
             {
                 item.Init();
+            }
+
+            if (!MainManager.instance.grantedCamera)
+            {
+
             }
         }
 
