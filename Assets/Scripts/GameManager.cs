@@ -84,11 +84,22 @@ namespace CapedHorse.BallBattle
         void OnEnable()
         {
             EventManager.OnSpawning += SpawningSoldier;
-        }
+            EventManager.SetPosition += SetControllerPosition;
+            EventManager.OnGoal += Goal;
+            EventManager.OnNoBallPasses += NoBallPassed;
+            EventManager.OnTimesUp += TimesUp;
+            EventManager.OnTriggerPenalty += TriggerPenalty;
+
+    }
 
         void OnDisable()
         {
             EventManager.OnSpawning -= SpawningSoldier;
+            EventManager.SetPosition -= SetControllerPosition;
+            EventManager.OnGoal -= Goal;
+            EventManager.OnNoBallPasses -= NoBallPassed;
+            EventManager.OnTimesUp -= TimesUp;
+            EventManager.OnTriggerPenalty -= TriggerPenalty;
         }
 
         // Update is called once per frame
@@ -101,6 +112,11 @@ namespace CapedHorse.BallBattle
                     currentPlayTime -= Time.deltaTime;
 
                     UIManager.instance.UpdateTimerUI(currentPlayTime);
+                }
+                else
+                {
+                    isPlaying = false;
+                    EventManager.OnTimesUp?.Invoke();
                 }
                 
             }
@@ -174,6 +190,7 @@ namespace CapedHorse.BallBattle
                     if (spawner.energy < attackerPrefab.spawnEnergyCost)
                     {
                         //notifies that energy is low
+                        NotifUI.instance.Notify(NotifUI.NotifType.EnergyLow);
                         return;
                     }
                     soldier = Instantiate(attackerPrefab, attackersParent);
@@ -183,6 +200,7 @@ namespace CapedHorse.BallBattle
                     if (spawner.energy < defenderSoldier.spawnEnergyCost)
                     {
                         //notifies that energy is low
+                        NotifUI.instance.Notify(NotifUI.NotifType.EnergyLow);
                         return;
                     }
                     soldier = Instantiate(defenderSoldier, defendersParent);
@@ -213,6 +231,30 @@ namespace CapedHorse.BallBattle
             soldier.mesh.materials[0] = costumes.Find(x => x.name == "Inactive").headMat;
             soldier.mesh.materials[1] = costumes.Find(x => x.name == "Inactive").suitMat;
             DOVirtual.DelayedCall(inactiveTime, () => ChangingCostume(soldier));
+        }
+
+        /// <summary>
+        /// Should have delay before switching position
+        /// </summary>
+        public void Goal()
+        {
+
+            EventManager.SetPosition?.Invoke();
+        }
+
+        public void NoBallPassed()
+        {
+            EventManager.SetPosition?.Invoke();
+        }
+
+        public void TimesUp()
+        {
+            EventManager.SetPosition?.Invoke();
+        }
+
+        public void TriggerPenalty()
+        {
+
         }
 
         [System.Serializable]

@@ -1,9 +1,9 @@
 {
     "m_SelectedDeviceId": "RR8R801J99A",
     "m_SelectedPackage": {
-        "deviceId": "",
-        "name": "",
-        "processId": 0,
+        "deviceId": "RR8R801J99A",
+        "name": "com.capedhorse.BallBattle",
+        "processId": 30913,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -16,38 +16,44 @@
         },
         {
             "deviceId": "RR8R801J99A",
-            "name": "com.capedhorse.BallBattle",
-            "processId": 1546,
-            "exited": true
-        },
-        {
-            "deviceId": "RR8R801J99A",
-            "name": "com.shopee.id",
-            "processId": 30978,
-            "exited": true
-        },
-        {
-            "deviceId": "RR8R801J99A",
-            "name": "com.capedhorse.BallBattle",
-            "processId": 6478,
-            "exited": true
-        },
-        {
-            "deviceId": "RR8R801J99A",
-            "name": "com.capedhorse.BallBattle",
-            "processId": 7003,
-            "exited": true
-        },
-        {
-            "deviceId": "RR8R801J99A",
-            "name": "com.capedhorse.BallBattle",
-            "processId": 30906,
-            "exited": true
-        },
-        {
-            "deviceId": "RR8R801J99A",
             "name": "com.whatsapp",
             "processId": 6067,
+            "exited": false
+        },
+        {
+            "deviceId": "RR8R801J99A",
+            "name": "com.capedhorse.BallBattle",
+            "processId": 7178,
+            "exited": true
+        },
+        {
+            "deviceId": "RR8R801J99A",
+            "name": "com.capedhorse.BallBattle",
+            "processId": 7837,
+            "exited": true
+        },
+        {
+            "deviceId": "RR8R801J99A",
+            "name": "com.capedhorse.BallBattle",
+            "processId": 9309,
+            "exited": true
+        },
+        {
+            "deviceId": "RR8R801J99A",
+            "name": "com.capedhorse.BallBattle",
+            "processId": 9631,
+            "exited": true
+        },
+        {
+            "deviceId": "RR8R801J99A",
+            "name": "com.capedhorse.BallBattle",
+            "processId": 30352,
+            "exited": true
+        },
+        {
+            "deviceId": "RR8R801J99A",
+            "name": "com.capedhorse.BallBattle",
+            "processId": 30913,
             "exited": false
         }
     ],

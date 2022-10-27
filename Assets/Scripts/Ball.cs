@@ -37,6 +37,14 @@ namespace CapedHorse.BallBattle
             transform.SetParent(GameManager.instance.field);
             ballAnim.SetBool("Hold", false);
         }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.tag == "Goal")
+            {
+                EventManager.OnGoal?.Invoke();
+            }   
+        }
     }
 }
 

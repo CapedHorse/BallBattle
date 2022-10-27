@@ -101,6 +101,7 @@ namespace CapedHorse.BallBattle
 
         private void PermissionCallbacks_PermissionGranted(string obj)
         {
+            Debug.Log("Camera Granted");
             grantedCamera = true;
             permissionCallbacks.PermissionGranted -= PermissionCallbacks_PermissionGranted;
         }

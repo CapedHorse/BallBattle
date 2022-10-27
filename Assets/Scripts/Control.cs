@@ -77,7 +77,13 @@ namespace CapedHorse.BallBattle
                     RaycastHit hit;
                     if (Physics.Raycast(ray, out hit, Mathf.Infinity, raycastLayer.value))
                     {
-                        Debug.Log("hit" + hit.transform.name);
+                        
+                        Debug.Log("hit" + hit.transform.name + position.ToString());
+                        if (hit.transform.CompareTag(position.ToString() + "Area"))
+                        {
+                            
+                            EventManager.OnSpawning?.Invoke(this, hit.point);
+                        }
                     }
                 }
             }
@@ -125,7 +131,7 @@ namespace CapedHorse.BallBattle
         {
             if (Utility.NearestToTarget(soldiers, GameManager.instance.ball.transform) == null)
             {
-                EventManager.OnNoBallPasses?.Invoke(this);
+                EventManager.OnNoBallPasses?.Invoke();
             }
         }
     }

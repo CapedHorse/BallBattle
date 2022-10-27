@@ -60,8 +60,18 @@ namespace CapedHorse.BallBattle
 
             if (!MainManager.instance.grantedCamera)
             {
-
+                ARmodeToggle.gameObject.SetActive(false);
             }
+        }
+
+        private void OnEnable()
+        {
+            EventManager.SetPosition += SwitchControllerUIPosition;
+        }
+
+        private void OnDisable()
+        {
+            EventManager.SetPosition -= SwitchControllerUIPosition;
         }
 
         // Update is called once per frame
@@ -121,6 +131,17 @@ namespace CapedHorse.BallBattle
             countDownTweenParent.DOPunchScale(Vector3.one * 0.5f, 0.25f, 1, 1);
         }
 
+        public void SwitchControllerUIPosition()
+        {
+            DOVirtual.DelayedCall(0.25f, () =>
+            {
+                foreach (var item in controllerUIs)
+                {
+                    item.SwitchSides();
+                }
+            });
+            
+        }
         
     }
 }
