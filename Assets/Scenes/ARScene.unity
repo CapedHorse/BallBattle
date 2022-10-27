@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.3708985, g: 0.3783704, b: 0.35722548, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -185,7 +185,22 @@ PrefabInstance:
     - target: {fileID: 8500481251269879119, guid: c4d4ddc70ae42d94293e0a7af70a37fc,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500481251269879119, guid: c4d4ddc70ae42d94293e0a7af70a37fc,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.50502
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500481251269879119, guid: c4d4ddc70ae42d94293e0a7af70a37fc,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.50502
+      objectReference: {fileID: 0}
+    - target: {fileID: 8500481251269879119, guid: c4d4ddc70ae42d94293e0a7af70a37fc,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.50502
       objectReference: {fileID: 0}
     - target: {fileID: 8500481251269879119, guid: c4d4ddc70ae42d94293e0a7af70a37fc,
         type: 3}
@@ -242,7 +257,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Defender Soldier
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8500481251269879118, guid: c4d4ddc70ae42d94293e0a7af70a37fc, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c4d4ddc70ae42d94293e0a7af70a37fc, type: 3}
 --- !u!4 &822893683 stripped
 Transform:
@@ -606,7 +622,7 @@ MonoBehaviour:
   m_Script: {fileID: -1826476478, guid: 1e108ae5f2133934f948edded555f03e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mWorldCenterMode: 1
+  mWorldCenterMode: 2
   mWorldCenter: {fileID: 0}
 --- !u!81 &1204155120
 AudioListener:
@@ -670,8 +686,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2146021826}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1117,7 +1132,7 @@ Transform:
   m_Children:
   - {fileID: 822893683}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2146021822
 GameObject:
@@ -1243,6 +1258,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1204155122}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

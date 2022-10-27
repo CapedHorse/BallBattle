@@ -13,7 +13,7 @@ namespace CapedHorse.BallBattle
     public class MainManager : MonoBehaviour
     {
         public static MainManager instance;
-        PermissionCallbacks permissionCallbacks = new PermissionCallbacks();
+        //PermissionCallbacks permissionCallbacks = new PermissionCallbacks();
         public bool grantedCamera;
         public bool paused;
         void Awake()
@@ -74,8 +74,10 @@ namespace CapedHorse.BallBattle
         public void CheckIfCameraPermissionGranted()
         {
 #if UNITY_ANDROID
+
             if (!Permission.HasUserAuthorizedPermission(Permission.Camera))
-            {                
+            {
+                var permissionCallbacks = new PermissionCallbacks();
                 permissionCallbacks.PermissionDenied += Callbacks_PermissionDenied;
                 permissionCallbacks.PermissionGranted += PermissionCallbacks_PermissionGranted;
                 permissionCallbacks.PermissionDeniedAndDontAskAgain += PermissionCallbacks_PermissionDeniedAndDontAskAgain;
@@ -85,9 +87,6 @@ namespace CapedHorse.BallBattle
             {
                 grantedCamera = true;
             }
-
-#elif UNITY_IPHONE
-
 #endif
         }
 
@@ -96,20 +95,20 @@ namespace CapedHorse.BallBattle
         private void PermissionCallbacks_PermissionDeniedAndDontAskAgain(string obj)
         {
             grantedCamera = false;
-            permissionCallbacks.PermissionDenied -= PermissionCallbacks_PermissionDeniedAndDontAskAgain;
+            //permissionCallbacks.PermissionDenied -= PermissionCallbacks_PermissionDeniedAndDontAskAgain;
         }
 
         private void PermissionCallbacks_PermissionGranted(string obj)
         {
             Debug.Log("Camera Granted");
             grantedCamera = true;
-            permissionCallbacks.PermissionGranted -= PermissionCallbacks_PermissionGranted;
+            //permissionCallbacks.PermissionGranted -= PermissionCallbacks_PermissionGranted;
         }
 
         private void Callbacks_PermissionDenied(string obj)
-        {            
+        {
             grantedCamera = false;
-            permissionCallbacks.PermissionDenied -= Callbacks_PermissionDenied;
+            //permissionCallbacks.PermissionDenied -= Callbacks_PermissionDenied;
         }
     }
 }
