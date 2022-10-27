@@ -14,10 +14,10 @@ namespace CapedHorse.BallBattle
 
         public Canvas mainCanvas;
 
-        public Button pauseButton;
+        public Button pauseButton, continueButton, quitButton, yesQuitBtn, noQuitBtn;
         public Toggle ARmodeToggle;
 
-        public GameObject pauseGame;
+        public GameObject pauseGame, quitPopUp;
         public Transform attackerUIParent;
         public Transform defenderUIParent;
         public Transform countDownTweenParent;
@@ -58,10 +58,41 @@ namespace CapedHorse.BallBattle
                 item.Init();
             }
 
-            if (!MainManager.instance.grantedCamera)
+            if (!MainManager.instance.IsDeviceSupported)
             {
                 ARmodeToggle.gameObject.SetActive(false);
             }
+
+            pauseButton.onClick.AddListener(() =>
+            {
+                AudioManager.instance.PlaySFX("Click");
+                pauseGame.SetActive(true);
+                MainManager.instance.PauseGame();
+            });
+            continueButton.onClick.AddListener(() =>
+            {
+                AudioManager.instance.PlaySFX("Click");
+                pauseGame.SetActive(false);
+                MainManager.instance.PauseGame();
+            });
+            quitButton.onClick.AddListener(() =>
+            {
+                AudioManager.instance.PlaySFX("Click");
+                quitPopUp.SetActive(true);
+            });
+
+            yesQuitBtn.onClick.AddListener(() =>
+            {
+                AudioManager.instance.PlaySFX("Click");
+                MainManager.instance.BackToHomeScene();                
+            });
+
+            noQuitBtn.onClick.AddListener(() =>
+            {
+                AudioManager.instance.PlaySFX("Click");
+                quitPopUp.SetActive(false);                
+            });
+
         }
 
         private void OnEnable()

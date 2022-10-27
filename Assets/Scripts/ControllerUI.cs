@@ -13,6 +13,7 @@ namespace CapedHorse.BallBattle
         public GameManager.Position controllerPosition;
         public Control controller;
         public GameObject barObj;
+        public BarUI barPrefab;
 
         public Transform scoreParent;
         public Transform barsParent;
@@ -21,16 +22,17 @@ namespace CapedHorse.BallBattle
         public TextMeshProUGUI energyControllerNameText;
         public GameObject notTurnOverlay;
 
+
         [System.Serializable]
-        public class BarUI
+        public class UIBar
         {
             public bool barFull;
             public GameObject barParent;
             public Image barLowImg;
             public Image barFullImg;
         }
-        public List<BarUI> bars;
-        public List<BarUI> emptyBars;
+        public List<UIBar> bars;
+        public List<UIBar> emptyBars;
 
         // Start is called before the first frame update
         void Start()
@@ -61,7 +63,7 @@ namespace CapedHorse.BallBattle
         {
             for (int i = 0; i < GameManager.instance.gameSetting.energyBar; i++)
             {
-                var newBar = new BarUI();
+                var newBar = new UIBar();
                 newBar.barParent = Instantiate(barObj, barsParent);
                 newBar.barFullImg = newBar.barParent.transform.GetChild(0).GetComponent<Image>();
                 newBar.barLowImg = newBar.barParent.transform.GetChild(1).GetComponent<Image>();
