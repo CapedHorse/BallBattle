@@ -159,6 +159,10 @@ namespace CapedHorse.BallBattle
         {
             get
             {
+#if UNITY_EDITOR
+                return false;
+#else
+
                 if (VuforiaRuntimeUtilities.GetActiveFusionProvider() == FusionProviderType.VISION_ONLY)
                 {
                     return false;
@@ -166,7 +170,8 @@ namespace CapedHorse.BallBattle
                 else
                 {
                     return true;
-                }
+               }
+#endif
             }
             
         }

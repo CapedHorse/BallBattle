@@ -122,6 +122,7 @@ namespace CapedHorse.BallBattle
             timerParent.DOAnchorPos(initTimerPos, 0.25f);
             menuParent.DOAnchorPos(initMenuPos, 0.25f);
 
+            AudioManager.instance.PlaySFX("PopUp");
             afterCountDown?.Invoke();
         }
 
@@ -129,6 +130,7 @@ namespace CapedHorse.BallBattle
         {
             countDownText.text = text;
             countDownTweenParent.DOPunchScale(Vector3.one * 0.5f, 0.25f, 1, 1);
+            AudioManager.instance.PlaySFX(text == "GO!" ? "Whistle": "CountDown"); //on Go text, play the whistle
         }
 
         public void SwitchControllerUIPosition()

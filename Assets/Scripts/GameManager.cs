@@ -130,6 +130,7 @@ namespace CapedHorse.BallBattle
         /// </summary>
         void StartCountDown()
         {
+            AudioManager.instance.PlayBGM("Play");
             currentPlayTime = gameSetting.timePerMatch;
             UIManager.instance.UpdateTimerUI(currentPlayTime);
             SetControllerPosition();
@@ -140,7 +141,6 @@ namespace CapedHorse.BallBattle
                 currentTurn = controllers[controllers.Count-1];
                 currentAttacker = controllers[controllers.Count - 1];                
                 SetControllerTurn();
-                
             }));
         }
 
@@ -210,6 +210,7 @@ namespace CapedHorse.BallBattle
                     break;
             }
 
+            AudioManager.instance.PlaySFX("Ting");
             spawner.CostingEnergy(soldier.spawnEnergyCost);
             soldier.transform.position = spawnedPosition;
             soldier.transform.eulerAngles = spawner.position == Position.Attacker ? Vector3.zero : new Vector3(0, 180, 0);

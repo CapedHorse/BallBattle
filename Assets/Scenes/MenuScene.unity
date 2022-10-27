@@ -723,7 +723,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -2363,6 +2363,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1362244865}
+  - component: {fileID: 1362244866}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -2387,6 +2388,40 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1362244866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362244864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f2b9db2cab01b43963bc2819f0d2b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgmAudioSource: {fileID: 428020183}
+  sfxAudioSource: {fileID: 981496112}
+  sfx:
+  - id: Boom
+    audioClip: {fileID: 8300000, guid: d484339581b9d394cbbdcaf02eb99b14, type: 3}
+  - id: Click
+    audioClip: {fileID: 8300000, guid: eabff9a1c24483b4092fab0aed0b90bb, type: 3}
+  - id: CountDown
+    audioClip: {fileID: 8300000, guid: dbab08bd73d7d044a9db22fc9b406c0f, type: 3}
+  - id: Hit
+    audioClip: {fileID: 8300000, guid: 9706b12c65885ef43a9681bebc6f66f8, type: 3}
+  - id: PopUp
+    audioClip: {fileID: 8300000, guid: dc1d682314df0fd48aaf57f6c00c7786, type: 3}
+  - id: Whistle
+    audioClip: {fileID: 8300000, guid: 199cde146d0298a428e144eef4fbe837, type: 3}
+  - id: Ting
+    audioClip: {fileID: 8300000, guid: 21de21b4a282b7c4a9b0d04c5d5ef80b, type: 3}
+  bgm:
+  - id: Menu
+    audioClip: {fileID: 8300000, guid: 344a051707f4de5448cf5dcd3bc99ddb, type: 3}
+  - id: Play
+    audioClip: {fileID: 8300000, guid: 4afc55ace30e9de44b4a8e75cfa2645f, type: 3}
 --- !u!1 &1404742298
 GameObject:
   m_ObjectHideFlags: 0

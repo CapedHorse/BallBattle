@@ -18,11 +18,38 @@ namespace CapedHorse.BallBattle
         // Start is called before the first frame update
         void Start()
         {
-            playARModeButton.onClick.AddListener(MainManager.instance.PlayGameARMode);
-            playNormalModeButton.onClick.AddListener(MainManager.instance.PlayGameNormalMode);
-            quitButton.onClick.AddListener(() => PopUpQuit(true));
-            yesQuitButton.onClick.AddListener(() => MainManager.instance.QuitGame());
-            noQuitButton.onClick.AddListener(() => PopUpQuit(false));
+            playARModeButton.onClick.AddListener(() =>
+            {
+                AudioManager.instance.PlaySFX("Click");
+                MainManager.instance.PlayGameARMode();
+            });
+            playNormalModeButton.onClick.AddListener(() =>
+            {
+                AudioManager.instance.PlaySFX("Click");
+                MainManager.instance.PlayGameNormalMode();
+            });
+            quitButton.onClick.AddListener(() => 
+            {
+                AudioManager.instance.PlaySFX("Click");
+                PopUpQuit(true); 
+            });
+            yesQuitButton.onClick.AddListener(() =>
+            {
+                AudioManager.instance.PlaySFX("Click");
+                MainManager.instance.QuitGame(); 
+            });
+            noQuitButton.onClick.AddListener(() =>
+            {
+                AudioManager.instance.PlaySFX("Click");
+                PopUpQuit(false); 
+            });
+
+            audioToggle.onValueChanged.AddListener((on) =>
+            {
+                AudioManager.instance.AudioMute(AudioManager.AudioSourceType.bgm, on);
+                AudioManager.instance.AudioMute(AudioManager.AudioSourceType.sfx, on);
+                AudioManager.instance.PlaySFX("Click");
+            });
 
             //disable ARModePlayButton if device not supported by ARCore or Vuforia
             //also show a text to notify
@@ -31,7 +58,11 @@ namespace CapedHorse.BallBattle
                 playARModeButton.interactable = false;
                 unsupportedARDevice.SetActive(true);
             }
+
+            AudioManager.instance.PlayBGM("Menu");
         }
+
+        
 
         /// <summary>
         /// Tweening pop up quit with scale.
