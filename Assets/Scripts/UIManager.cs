@@ -148,6 +148,7 @@ namespace CapedHorse.BallBattle
             foreach (var item in controllerUIs)
             {
                 item.SwitchSides();
+                item.RefillEnergy();
             }
 
             timerParent.DOAnchorPos(initTimerPos, 0.25f);

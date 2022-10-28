@@ -4,8 +4,11 @@ using UnityEngine;
 
 namespace CapedHorse.BallBattle
 {
+
+    /// <summary>
     // Sends notification to the component on some other gameObject.
     // This removes necessity to have trigger and its component on the same gameObject.
+    /// </summary>
     public interface IOnTriggerNotifiable
     {
         void onChild_OnTriggerEnter(Collider myEnteredTrigger, Collider other);
@@ -26,15 +29,12 @@ namespace CapedHorse.BallBattle
         {
             if (_toNotify == null) { return; }
 
-            // needed, because user will most likely drag an entire GAME OBJECT into our variable.
-            // This means we would get assigned a Transform component, not the one with the interface.
-            // Therefore, after assignment we find such interface ourselves, on the same gameObject:
             _toNotify = _toNotify.GetComponent(typeof(IOnTriggerNotifiable));
 
             if (_toNotify == null)
             {
-                // // Debug.LogError("PhysicsOnTrigger_notifier couldn't grab hold of compoent you wish to notify."
-                //+ "\nIt means there is no component implementing the IOnTriggerNotifiable interface.");
+                Debug.LogError("Couldn't grab hold of compoent you wish to notify."
+
             }
         }
 #endif

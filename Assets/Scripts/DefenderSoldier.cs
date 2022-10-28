@@ -31,8 +31,7 @@ namespace CapedHorse.BallBattle
             detectionRadius.transform.localScale = new Vector3(wide, 0, wide);
 
             StartCoroutine(BaseStart(() =>  {
-                OnChangingState(State.StandBy); 
-                
+                OnChangingState(State.StandBy);                 
                 }));
         }
 
@@ -83,21 +82,28 @@ namespace CapedHorse.BallBattle
                 case State.Inactive:
                     ResetAnimation();
                     collider.enabled = false;
-                    DOVirtual.DelayedCall(reactivateTime, () =>
-                    {
-                        collider.enabled = true;
-                        OnChangingState(State.ReturnBack);
-                    });
+                    if (!justSpawned)
+                    {                        
+                        DOVirtual.DelayedCall(reactivateTime, () =>
+                        {
+                            
+                            OnChangingState(State.ReturnBack);
+                        });
+                    }
+                    
                     break;
                 case State.StandBy:
                     SetAnimation("StandBy");
+                    collider.enabled = true;
                     break;
+                    
                 case State.Chasing:
                     SetAnimation("Chasing");
+                    collider.enabled = true;
                     break;
                 case State.ReturnBack:
                     SetAnimation("ReturnBack");
-
+                    collider.enabled = true;
                     break;
                 default:
                     break;

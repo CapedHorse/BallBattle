@@ -77,15 +77,21 @@ namespace CapedHorse.BallBattle
             
             switch (state)
             {
-                case State.Inactive:
+                case State.Inactive:                    
                     ResetAnimation();
                     collider.enabled = false;
-                    break;
+                    if (!justSpawned)
+                    { 
+                    
+                    }
+                        break;
                 case State.HoldingBall:
+                    collider.enabled = true;
                     SetAnimation("HoldingBall");
                     target = GameManager.instance.attackerTargetGate;
                     break;
                 case State.ChasingBall:
+                    collider.enabled = true;
                     SetAnimation("ChasingBall");
                     target = GameManager.instance.ball.transform;
                     break;

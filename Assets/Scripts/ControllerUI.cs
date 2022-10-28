@@ -21,18 +21,19 @@ namespace CapedHorse.BallBattle
 
         public TextMeshProUGUI energyControllerNameText;
         public GameObject notTurnOverlay;
+        public List<BarUI> bars;
+        public List<BarUI> costedBars;
+        //public List<UIBar> emptyBars;
 
+        //[System.Serializable]
+        //public class UIBar
+        //{
+        //    public bool barFull;
+        //    public GameObject barParent;
+        //    public Image barLowImg;
+        //    public Image barFullImg;
+        //}
 
-        [System.Serializable]
-        public class UIBar
-        {
-            public bool barFull;
-            public GameObject barParent;
-            public Image barLowImg;
-            public Image barFullImg;
-        }
-        public List<UIBar> bars;
-        public List<UIBar> emptyBars;
 
         // Start is called before the first frame update
         void Start()
@@ -61,17 +62,17 @@ namespace CapedHorse.BallBattle
         /// </summary>
         public void Init()
         {
-            for (int i = 0; i < GameManager.instance.gameSetting.energyBar; i++)
-            {
-                var newBar = new UIBar();
-                newBar.barParent = Instantiate(barObj, barsParent);
-                newBar.barFullImg = newBar.barParent.transform.GetChild(0).GetComponent<Image>();
-                newBar.barLowImg = newBar.barParent.transform.GetChild(1).GetComponent<Image>();
-                newBar.barLowImg.gameObject.SetActive(false);
-                newBar.barFull = true;
-                bars.Add(newBar);
-            }
-            barObj.SetActive(false);
+            //for (int i = 0; i < GameManager.instance.gameSetting.energyBar; i++)
+            //{
+            //    var newBar = new UIBar();
+            //    newBar.barParent = Instantiate(barObj, barsParent);
+            //    newBar.barFullImg = newBar.barParent.transform.GetChild(0).GetComponent<Image>();
+            //    newBar.barLowImg = newBar.barParent.transform.GetChild(1).GetComponent<Image>();
+            //    newBar.barLowImg.gameObject.SetActive(false);
+            //    newBar.barFull = true;
+            //    bars.Add(newBar);
+            //}
+            //barObj.SetActive(false);
 
             controller = GameManager.instance.controllers.Find(x => x.position == controllerPosition);
 
@@ -94,54 +95,61 @@ namespace CapedHorse.BallBattle
             }
         }
 
-        [SerializeField] int lastFilledBar; //log last filled bar index
 
+        /// <summary>
+        /// Costing Energy bar will destroy BarUI based on how much the cost is, this is to make the UI auto arrange themself. 
+        /// Differentiate the current costed energy bar with default energy bar so it's easier to destroy.
+        /// After costing, invoke refill.
+        /// </summary>
+        /// <param name="_controller"></param>
+        /// <param name="cost"></param>
         public void EnergyCostUI(Control _controller,  float cost)
         {
             if (controller != _controller)
                 return;
 
-            for (int i = 0; i < bars.Count; i++)
+            costedBars.Clear();
+
+            for (int i = 0; i < cost; i++)
             {
-                if (i!= 0 && !bars[i].barFull)
+                if (bars[i].barFull)
                 {
-                    lastFilledBar = i;
-                }
+                    costedBars.Add(bars[i]);
+                }                
             }
 
-            var startingBarCost = bars.Count -  bars.FindAll(x => x.barFull).Count;
-
-            var realCost = Mathf.Clamp(startingBarCost + cost, 0, bars.Count);
-            Debug.Log("Real cost " + realCost);
-            for (int i = startingBarCost; i < realCost ; i++)
+            for (int i = costedBars.Count -1; i >= 0; i--)
             {
-                bars[i].barFullImg.gameObject.SetActive(false);
-                bars[i].barLowImg.gameObject.SetActive(true);
-                bars[i].barLowImg.fillAmount = 0;
-                bars[i].barFull = false;
-                emptyBars.Add(bars[i]);
+                bars.Remove(costedBars[i]);
+                Destroy(costedBars[i].gameObject);
             }
 
+            costedBars.Clear();
 
+            RefillEnergy();
         }
-
+        
         /// <summary>
-        /// Need this to make newly used bar always on the front of the filled/currently refilling ones
+        /// Refill energy will instantiate a new BarUI
         /// </summary>
-        public void RearrangeEnergyBar()
-        {
-            
-        }
+        bool currentlyRefilling;
 
-        public void RefillEnergy(Control _controller) 
+        public void RefillEnergy() 
         {
-            if (controller != _controller)
+            if (currentlyRefilling)
                 return;
-
-            if (emptyBars.Count > 0)
+            currentlyRefilling = true;
+            var newEnergy = Instantiate(barPrefab, barsParent);
+            newEnergy.InitRefill(this, () =>
             {
-                
-            }
+                controller.energy = Mathf.Clamp(controller.energy+1, 0, GameManager.instance.gameSetting.energyBar);
+                currentlyRefilling = false;
+                if (controller.energy < GameManager.instance.gameSetting.energyBar)
+                {
+                    RefillEnergy();
+                }
+            });
+            bars.Add(newEnergy);
         }
 
         /// <summary>
@@ -183,11 +191,6 @@ namespace CapedHorse.BallBattle
             Sequence seq = DOTween.Sequence();
             seq.Append(thisRect.DOAnchorPos(from, 0));
             seq.Append(thisRect.DOAnchorPos(to, 0.25f));
-        }
-
-        public void SetPenaltyMode()
-        {
-
         }
 
         // Update is called once per frame

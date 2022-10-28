@@ -131,8 +131,7 @@ namespace CapedHorse.BallBattle
         void StartCountDown()
         {
             AudioManager.instance.PlayBGM("Play");
-            currentPlayTime = gameSetting.timePerMatch;
-            UIManager.instance.UpdateTimerUI(currentPlayTime);
+            InitTime();
             SetControllerPosition();
             StartCoroutine(UIManager.instance.CountingDown(() =>
             {
@@ -144,6 +143,19 @@ namespace CapedHorse.BallBattle
             }));
         }
 
+        /// <summary>
+        /// To Adjust time per match and in the UI
+        /// Will be invoked on first countdown and on switching sides
+        /// </summary>
+        void InitTime()
+        {
+            currentPlayTime = gameSetting.timePerMatch;
+            UIManager.instance.UpdateTimerUI(currentPlayTime);
+        }
+
+        /// <summary>
+        /// Switching controller's position
+        /// </summary>
         void SetControllerPosition()
         {
             if (currentAttacker == controllers[0])
@@ -160,6 +172,10 @@ namespace CapedHorse.BallBattle
             }
         }
 
+
+        /// <summary>
+        /// Setting controller's turn every spawning, not invoked while
+        /// </summary>
         void SetControllerTurn()
         {
             if (currentTurn == controllers[0])
@@ -222,12 +238,21 @@ namespace CapedHorse.BallBattle
             SetControllerTurn();
         }
 
+        /// <summary>
+        /// Changing costume for spawned soldier based on their controller's color
+        /// </summary>
+        /// <param name="soldier"></param>
         public void ChangingCostume(Soldier soldier)
         {
             soldier.mesh.materials[0] = costumeTable[soldier.controller.controlType.ToString()].headMat;
             soldier.mesh.materials[1] = costumeTable[soldier.controller.controlType.ToString()].suitMat;
         }
 
+        /// <summary>
+        /// Setting a soldier costume to grayscale.
+        /// </summary>
+        /// <param name="soldier"></param>
+        /// <param name="inactiveTime"></param>
         public void SetInactiveSuit(Soldier soldier, float inactiveTime) {
             soldier.mesh.materials[0] = costumes.Find(x => x.name == "Inactive").headMat;
             soldier.mesh.materials[1] = costumes.Find(x => x.name == "Inactive").suitMat;

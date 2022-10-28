@@ -10,6 +10,7 @@ namespace CapedHorse.BallBattle
         public ControlType controlType;
         public GameManager.Position position;
         public Goal thisGoal, oppositeGoal;
+        public float energyRegenTime = 0.5f;
 
         public enum Status { Loose, HoldingBall }
         public Status status;
@@ -24,7 +25,7 @@ namespace CapedHorse.BallBattle
         // Start is called before the first frame update
         void Start()
         {
-            energy = GameManager.instance.gameSetting.energyBar;
+            //energy = GameManager.instance.gameSetting.energyBar;
         }
 
         void OnEnable()

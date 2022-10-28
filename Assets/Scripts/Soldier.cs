@@ -27,13 +27,14 @@ namespace CapedHorse.BallBattle
         public GameObject hit;
         //variables
         [Header("Variables")]
-        public float energyRegenTime;
         public float spawnEnergyCost;
         public float spawnTime;
         public float reactivateTime;
         public float normalSpeed;
 
         public Transform target;
+
+        public bool justSpawned = true;
 
 
         /// <summary>
@@ -42,9 +43,10 @@ namespace CapedHorse.BallBattle
         public IEnumerator BaseStart(UnityAction afterInactive)
         {
             puffShow.SetActive(true);
-            yield return new WaitForSeconds(3);
             OnChangingState(State.Inactive);
+            GameManager.instance.SetInactiveSuit(this, spawnTime);
             yield return new WaitForSeconds(spawnTime);
+            justSpawned = false;
             afterInactive?.Invoke();
         }
 
