@@ -9,6 +9,8 @@ namespace CapedHorse.BallBattle
         public enum ControlType { Player, Enemy}
         public ControlType controlType;
         public GameManager.Position position;
+        public Collider spawnArea;
+        public ControllerUI thisControllerUI;
         public Goal thisGoal, oppositeGoal;
         public float energyRegenTime = 0.5f;
 
@@ -21,6 +23,7 @@ namespace CapedHorse.BallBattle
         [Header("Status")]
         public float energy;
         public bool isInTurn;
+        public int score;
         
         // Start is called before the first frame update
         void Start()
@@ -32,12 +35,14 @@ namespace CapedHorse.BallBattle
         {
             EventManager.SetTurn += InTurn;
             EventManager.OnNearestToBall += CheckIfNearBall;
+            EventManager.OnNearestToPass += NearestToPass;
         }
 
         void OnDisable()
         {
             EventManager.SetTurn -= InTurn;
             EventManager.OnNearestToBall -= CheckIfNearBall;
+            EventManager.OnNearestToPass -= NearestToPass;
         }
 
         void InTurn(Control control)
@@ -113,6 +118,11 @@ namespace CapedHorse.BallBattle
             EventManager.OnCostingEnergy(this, energyCost);
         }
 
+
+        /// <summary>
+        /// When attacker solder spawned, check if there is nearby ball, chase them
+        /// </summary>
+        /// <param name="soldier"></param>
         public void CheckIfNearBall(AttackerSoldier soldier)
         {
             if (status == Status.HoldingBall)
@@ -128,12 +138,42 @@ namespace CapedHorse.BallBattle
             }            
         }
 
-        public void PassingBall(AttackerSoldier soldier)
+        /// <summary>
+        /// Checking if there is still soldier that can be passed the ball
+        /// </summary>
+        /// <param name="soldier"></param>
+        public void NearestToPass(AttackerSoldier soldier)
         {
-            if (Utility.NearestToTarget(soldiers, GameManager.instance.ball.transform) == null)
+            if (soldier.controller != this)
+                return;
+
+            var availableAttacker = soldiers.FindAll(x => !(x as AttackerSoldier).hasCaught);
+
+            if (availableAttacker.Count > 0)
+            {
+                var nearest = Utility.NearestToTarget(availableAttacker, GameManager.instance.ball.transform);
+                if (nearest != null)
+                {
+                    (nearest as AttackerSoldier).OnGettingPassed?.Invoke(soldier);
+                }
+                else
+                {
+                    EventManager.OnNoBallPasses?.Invoke();
+                }
+            }
+            else
             {
                 EventManager.OnNoBallPasses?.Invoke();
             }
+            
+        }
+
+       
+
+        public void GainScore()
+        {
+            score++;
+            thisControllerUI.GainScoreUI();
         }
     }
 }

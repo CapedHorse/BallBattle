@@ -173,9 +173,10 @@ namespace CapedHorse.BallBattle
                 {
                     item.SwitchSides();
                 }
-            });
-            
+            });            
         }
+               
+
         
     }
 }

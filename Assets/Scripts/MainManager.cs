@@ -18,6 +18,8 @@ namespace CapedHorse.BallBattle
         //PermissionCallbacks permissionCallbacks = new PermissionCallbacks();
         public bool grantedCamera;
         public bool paused;
+
+        public bool allowStartGame;
         void Awake()
         {
             if (instance == null)
@@ -55,7 +57,7 @@ namespace CapedHorse.BallBattle
             }
             else
             {
-                SceneManager.LoadScene("MainScene");
+                
             }
         }
 
@@ -71,6 +73,7 @@ namespace CapedHorse.BallBattle
             SceneManager.sceneLoaded += SceneManager_sceneLoaded;
         }
 
+
         /// <summary>
         /// Callback when main scene is done loaded, will invoke an action
         /// </summary>
@@ -83,17 +86,23 @@ namespace CapedHorse.BallBattle
                 afterLoaded?.Invoke();
                 afterLoaded = null;
                 SceneManager.sceneLoaded -= SceneManager_sceneLoaded;
+                allowStartGame = true;
             }
         }
 
+        /// <summary>
+        /// play Game in normal mode, still will have on scene loaded callbak
+        /// </summary>
         public void PlayGameNormalMode()
         {
             SceneManager.LoadScene("MainScene");
+            SceneManager.sceneLoaded += SceneManager_sceneLoaded;
         }
 
         public void BackToHomeScene()
         {
             SceneManager.LoadScene("MenuScene");
+            allowStartGame = false;
         }
 
         public void QuitGame()

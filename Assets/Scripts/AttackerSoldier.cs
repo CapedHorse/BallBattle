@@ -6,12 +6,13 @@ using DG.Tweening;
 
 namespace CapedHorse.BallBattle
 {
-    public class AttackerSoldier : Soldier, IOnTriggerNotifiable
+    public class AttackerSoldier : Soldier
     {        
         //variables
         public float carryingSpeed;
         public float passingBallSpeed;
         bool gettingPassed;
+        public bool hasCaught;
 
         [Header("Attacker Object Refs")]
         
@@ -42,8 +43,6 @@ namespace CapedHorse.BallBattle
         }
 
         // Update is called once per frame
-
-        //moving logic is false
         void Update()
         {
             if (!GameManager.instance.isPlaying)
@@ -71,6 +70,10 @@ namespace CapedHorse.BallBattle
             }
         }
 
+        /// <summary>
+        /// Will invoke different calls & behaviour when changing state.
+        /// </summary>
+        /// <param name="state"></param>
         public override void OnChangingState(State state)
         {
             base.OnChangingState(state);
@@ -79,11 +82,11 @@ namespace CapedHorse.BallBattle
             {
                 case State.Inactive:                    
                     ResetAnimation();
-                    collider.enabled = false;
-                    if (!justSpawned)
-                    { 
+                    //collider.enabled = false;
+                    //if (!justSpawned)
+                    //{ 
                     
-                    }
+                    //}
                         break;
                 case State.HoldingBall:
                     collider.enabled = true;
@@ -101,24 +104,27 @@ namespace CapedHorse.BallBattle
                     break;
                 case State.PassedBall:
                     SetAnimation("PassedBall");
+                    RotateDirection(Ball.instance.transform.position);
                     break;
                 default:
                     break;
             }
         }
 
+        /// <summary>
+        /// When passed a ball
+        /// </summary>
+        /// <param name="passer"></param>
         public void GettingPassed(AttackerSoldier passer)
         {
             target = passer.transform;
             OnChangingState(State.PassedBall);
-
+            Ball.instance.Passed(this);
         }
 
         public void ChaseBall()
         {
             OnChangingState(State.ChasingBall);
-
-            
         }
 
         public void OnBallHolded(AttackerSoldier soldier)
@@ -127,24 +133,6 @@ namespace CapedHorse.BallBattle
             {
                 OnChangingState(State.StraightThrough);
             }
-        }
-
-
-
-        public void onChild_OnTriggerEnter(Collider myEnteredTrigger, Collider other)
-        {
-            
-
-        }
-
-        public void onChild_OnTriggerStay(Collider myEnteredTrigger, Collider other)
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        public void onChild_OnTriggerExit(Collider myEnteredTrigger, Collider other)
-        {
-            //throw new System.NotImplementedException();
         }
 
         void OnTriggerEnter(Collider other)
@@ -163,6 +151,7 @@ namespace CapedHorse.BallBattle
                 OnChangingState(State.Inactive);
                 exploded.SetActive(true);
                 controller.soldiers.Remove(this);
+                GameManager.instance.spawnedSoldiers.Remove(this);
                 Destroy(gameObject, 1);
             }
 
@@ -172,6 +161,7 @@ namespace CapedHorse.BallBattle
                 {
                     Debug.Log("Collide With Defender");
                     OnChangingState(State.Inactive);
+                    EventManager.OnNearestToPass?.Invoke(this);
                     DOVirtual.DelayedCall(reactivateTime, () =>
                     {
                         collider.enabled = true;

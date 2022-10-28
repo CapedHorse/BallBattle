@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-
+using System.Collections;
 
 namespace CapedHorse.BallBattle
 {
@@ -10,6 +10,8 @@ namespace CapedHorse.BallBattle
         public static GameManager instance;
 
         public enum Position { Attacker, Defender }
+
+        public enum MatchResult { PlayerWin, EnemyWin, Draw }
 
         [Header("Managers And Settings")]
         public GameSettingsSO gameSetting;
@@ -29,6 +31,7 @@ namespace CapedHorse.BallBattle
         [Header("Stats")]
         public List<Control> controllers;
         public bool isPlaying = false;
+        public int totalMatch;
         public bool IsPlaying => isPlaying;
         public float currentPlayTime;
 
@@ -76,8 +79,9 @@ namespace CapedHorse.BallBattle
             }
         }
         // Start is called before the first frame update
-        void Start()
+        IEnumerator Start()
         {
+            yield return new WaitUntil(() => MainManager.instance.allowStartGame);
             StartCountDown();
         }
 
@@ -89,7 +93,7 @@ namespace CapedHorse.BallBattle
             EventManager.OnNoBallPasses += NoBallPassed;
             EventManager.OnTimesUp += TimesUp;
             EventManager.OnTriggerPenalty += TriggerPenalty;
-
+            EventManager.OnMatchEnd += OnMatchResult;
     }
 
         void OnDisable()
@@ -100,6 +104,7 @@ namespace CapedHorse.BallBattle
             EventManager.OnNoBallPasses -= NoBallPassed;
             EventManager.OnTimesUp -= TimesUp;
             EventManager.OnTriggerPenalty -= TriggerPenalty;
+            EventManager.OnMatchEnd -= OnMatchResult;
         }
 
         // Update is called once per frame
@@ -137,8 +142,6 @@ namespace CapedHorse.BallBattle
             {
                 isPlaying = true;
                 currentPlayTime += 1f;
-                currentTurn = controllers[controllers.Count-1];
-                currentAttacker = controllers[controllers.Count - 1];                
                 SetControllerTurn();
             }));
         }
@@ -158,18 +161,50 @@ namespace CapedHorse.BallBattle
         /// </summary>
         void SetControllerPosition()
         {
-            if (currentAttacker == controllers[0])
-            {
-                currentAttacker = controllers[1];
-                controllers[0].position = Position.Defender;
-                controllers[1].position = Position.Attacker;
-            }
-            else
+            Debug.Log("Setting Controller position");
+            ClearField();
+            if (currentAttacker == null)
             {
                 currentAttacker = controllers[0];
                 controllers[0].position = Position.Attacker;
                 controllers[1].position = Position.Defender;
+                RotateField(true);
             }
+            else
+            {
+                if (currentAttacker == controllers[0])
+                {
+                    currentAttacker = controllers[1];
+                    controllers[0].position = Position.Defender;
+                    controllers[1].position = Position.Attacker;
+                    RotateField(false);
+                }
+                else
+                {
+                    currentAttacker = controllers[0];
+                    controllers[0].position = Position.Attacker;
+                    controllers[1].position = Position.Defender;
+                    RotateField(true);
+                }
+            }
+
+            Ball.instance.PlaceRandom();
+        }
+        
+        /// <summary>
+        /// Rotating y axis field, if asPlayer, means player is an attacker, rotate to default which is 0
+        /// </summary>
+        /// <param name="asPlayer"></param>
+        void RotateField(bool asPlayer)
+        {
+            var rotation = 0;
+
+            if (!asPlayer)
+            {
+                rotation = 180;
+            }
+
+            field.DORotate(new Vector3(0, rotation, 0), gameSetting.uiTweenDuration);
         }
 
 
@@ -178,14 +213,22 @@ namespace CapedHorse.BallBattle
         /// </summary>
         void SetControllerTurn()
         {
-            if (currentTurn == controllers[0])
-            {
-                currentTurn = controllers[1];
-            }
-            else
+            if (currentTurn == null)
             {
                 currentTurn = controllers[0];
             }
+            else
+            {
+                if (currentTurn == controllers[0])
+                {
+                    currentTurn = controllers[1];
+                }
+                else
+                {
+                    currentTurn = controllers[0];
+                }
+            }
+            
 
             EventManager.SetTurn?.Invoke(currentTurn);
         }
@@ -265,22 +308,109 @@ namespace CapedHorse.BallBattle
         public void Goal()
         {
 
-            EventManager.SetPosition?.Invoke();
+            if (currentAttacker == controllers[0])            
+                EventManager.OnMatchEnd(MatchResult.PlayerWin);
+            
+            else
+                EventManager.OnMatchEnd(MatchResult.EnemyWin);
+
         }
 
         public void NoBallPassed()
         {
-            EventManager.SetPosition?.Invoke();
+            if (currentAttacker == controllers[0])
+                EventManager.OnMatchEnd(MatchResult.EnemyWin);
+            else
+                EventManager.OnMatchEnd(MatchResult.PlayerWin);
         }
 
         public void TimesUp()
         {
-            EventManager.SetPosition?.Invoke();
+            EventManager.OnMatchEnd(MatchResult.Draw);
         }
 
         public void TriggerPenalty()
         {
+            StartCoroutine(GameEnd());
+        }
 
+        /// <summary>
+        /// Mathc result, show the result if the match is not exceeding maximum number yet, 
+        /// if do, check which score is higher, 
+        /// if draw, then trigger penalty mode, 
+        /// if not, show winner pop up, and 
+        /// </summary>
+        /// <param name="result"></param>
+        public void OnMatchResult(MatchResult result)
+        {
+            isPlaying = false;
+
+            switch (result)
+            {
+                case MatchResult.PlayerWin:
+                    controllers[0].GainScore();
+                    NotifUI.instance.Notify(NotifUI.NotifType.PlayerScore);
+                    break;
+                case MatchResult.EnemyWin:
+                    controllers[1].GainScore();
+                    NotifUI.instance.Notify(NotifUI.NotifType.EnemyScore);
+                    break;
+                case MatchResult.Draw:
+                    NotifUI.instance.Notify(NotifUI.NotifType.Draw);
+                    break;
+                default:
+                    break;
+            }
+            totalMatch++;
+            if (totalMatch <= gameSetting.matchPerGame)
+            {
+                StartCoroutine(StartSwitchingSide());
+            }
+            else
+            {
+                if (controllers[0].score > controllers[1].score)
+                {
+                    NotifUI.instance.Notify(NotifUI.NotifType.PlayerWon);
+                    StartCoroutine(GameEnd());
+                }
+                else if (controllers[1].score > controllers[0].score)
+                {
+                    NotifUI.instance.Notify(NotifUI.NotifType.EnemyWon);
+                    StartCoroutine(GameEnd());
+                }
+                else 
+                {
+                    NotifUI.instance.Notify(NotifUI.NotifType.Draw);
+                    EventManager.OnTriggerPenalty?.Invoke();
+                }
+                
+            }
+            
+        }
+
+        IEnumerator StartSwitchingSide()
+        {
+            yield return new WaitForSeconds(gameSetting.switchingSidesDelay);
+            EventManager.SetPosition?.Invoke();
+            yield return new WaitForSeconds(gameSetting.uiTweenDuration);
+            InitTime();
+            isPlaying = true;
+        }
+
+        IEnumerator GameEnd()
+        {
+            yield return new WaitForSeconds(gameSetting.backToMenuDelay);
+            MainManager.instance.BackToHomeScene();
+        }
+
+        void ClearField()
+        {
+            foreach (var item in spawnedSoldiers)
+            {
+                Destroy(item);
+            }
+
+            spawnedSoldiers.Clear();
         }
 
         [System.Serializable]

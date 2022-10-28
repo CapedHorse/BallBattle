@@ -156,10 +156,15 @@ namespace CapedHorse.BallBattle
 
         void OnTriggerEnter(Collider other) {
             if(other.CompareTag("Attacker")) {
-                OnChangingState(State.Inactive);
-                target = null;
-                haveTarget = false;
-                EventManager.OnAttackerCaught(this, other.GetComponent<AttackerSoldier>());
+                if (other.GetComponent<AttackerSoldier>().status == State.HoldingBall)
+                {
+                    OnChangingState(State.Inactive);
+                    target = null;
+                    haveTarget = false;
+                    EventManager.OnAttackerCaught?.Invoke(this, other.GetComponent<AttackerSoldier>());
+                    EventManager.OnBallLoose?.Invoke();
+                }
+                
             }
         }
     }

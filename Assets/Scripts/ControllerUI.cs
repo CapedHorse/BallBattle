@@ -12,13 +12,12 @@ namespace CapedHorse.BallBattle
         public RectTransform thisRect;
         public GameManager.Position controllerPosition;
         public Control controller;
-        public GameObject barObj;
         public BarUI barPrefab;
 
         public Transform scoreParent;
         public Transform barsParent;
 
-
+        public TextMeshProUGUI scoreText;
         public TextMeshProUGUI energyControllerNameText;
         public GameObject notTurnOverlay;
         public List<BarUI> bars;
@@ -190,7 +189,13 @@ namespace CapedHorse.BallBattle
         {
             Sequence seq = DOTween.Sequence();
             seq.Append(thisRect.DOAnchorPos(from, 0));
-            seq.Append(thisRect.DOAnchorPos(to, 0.25f));
+            seq.Append(thisRect.DOAnchorPos(to, GameManager.instance.gameSetting.uiTweenDuration));
+        }
+
+        public void GainScoreUI()
+        {
+            scoreText.text = controller.score.ToString();
+            scoreParent.DOPunchScale(Vector3.one * 0.5f, GameManager.instance.gameSetting.uiTweenDuration, 1, 1);
         }
 
         // Update is called once per frame

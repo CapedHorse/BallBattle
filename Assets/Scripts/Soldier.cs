@@ -65,13 +65,14 @@ namespace CapedHorse.BallBattle
         {
             target.y = 0;
             transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
-            transform.LookAt(new Vector3(0, target.y, 0)); //sometimes the rotation is not right
+            
             RotateDirection(target);
         }
 
         public void RotateDirection(Vector3 target)
         {
-            indicator.LookAt(new Vector3(0, target.y, 0));
+            transform.LookAt(new Vector3(0, target.y, 0)); //sometimes the rotation is not right
+            //indicator.LookAt(new Vector3(0, target.y, 0));
         }
 
         public void SetAnimation(string state)

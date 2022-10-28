@@ -33,46 +33,46 @@ namespace CapedHorse.BallBattle
             }
         }
 
-        public void Notify(NotifType type, UnityAction afterNotify = null)
+        public void Notify(NotifType type, float duration = 2)
         {
             switch (type)
             {
                 case NotifType.EnergyLow:
-                    TweenNotif(EnergyLowUI, afterNotify);
+                    TweenNotif(EnergyLowUI, duration);
                     break;
                 case NotifType.PlayerScore:
-                    TweenNotif(PlayerScoreUI, afterNotify);
+                    TweenNotif(PlayerScoreUI, duration);
                     break;
                 case NotifType.EnemyScore:
-                    TweenNotif(EnemyScoreUI, afterNotify);
+                    TweenNotif(EnemyScoreUI, duration);
                     break;
                 case NotifType.Draw:
-                    TweenNotif(DrawUI, afterNotify);
+                    TweenNotif(DrawUI, duration);
                     break;
                 case NotifType.PlayerWon:
-                    TweenNotif(PlayerWonUI, afterNotify);
+                    TweenNotif(PlayerWonUI, duration);
                     break;
                 case NotifType.EnemyWon:
-                    TweenNotif(EnemyWonUI, afterNotify);
+                    TweenNotif(EnemyWonUI, duration);
                     break;
                 case NotifType.SwitchSide:
-                    TweenNotif(SwitchSideUI, afterNotify);
+                    TweenNotif(SwitchSideUI, duration);
                     break;
                 case NotifType.PenaltyTime:
-                    TweenNotif(PenaltyTimeUI, afterNotify);
+                    TweenNotif(PenaltyTimeUI, duration);
                     break;
                 default:
                     break;
             }
         }
 
-        public void TweenNotif(RectTransform tweenedNotif, UnityAction afterNotif = null)
+        public void TweenNotif(RectTransform tweenedNotif, float duration = 2)
         {
             AudioManager.instance.PlaySFX("PopUp");
             Sequence seq = DOTween.Sequence();
             seq.Append(tweenedNotif.DOScale(0, 0)).AppendCallback(() => tweenedNotif.gameObject.SetActive(true));
-            seq.Append(tweenedNotif.DOScale(1, 0.25f)).AppendCallback(() => afterNotif?.Invoke());
-            seq.AppendInterval(2);
+            seq.Append(tweenedNotif.DOScale(1, 0.25f));
+            seq.AppendInterval(duration);
             seq.Append(tweenedNotif.DOScale(0, 0.25f)).AppendCallback(() =>
             {
                 tweenedNotif.localScale = Vector3.one;
