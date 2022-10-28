@@ -33,7 +33,7 @@ namespace CapedHorse.BallBattle
 
             if (_toNotify == null)
             {
-                Debug.LogError("Couldn't grab hold of compoent you wish to notify."
+                Debug.LogError("Couldn't grab hold of compoent you wish to notify.");
 
             }
         }
